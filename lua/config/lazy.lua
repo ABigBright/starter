@@ -10,7 +10,7 @@ require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
     -- { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    { "ABigBright/LazyVim", import = "lazyvim.plugins_cus_for_briq" },
+    { "ABigBright/LazyVim", branch = 'cus_for_briq', import = "lazyvim.plugins_cus_for_briq" },
     -- import any extras modules here
     -- { import = "lazyvim.plugins.extras.lang.typescript" },
     -- { import = "lazyvim.plugins.extras.lang.json" },
