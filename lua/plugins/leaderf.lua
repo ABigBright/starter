@@ -6,9 +6,11 @@ return {
     init = function()
         print("lazy init LeaderF")
     end,
+    cmd = {"LeaderfFile"},
+    build = "./install.sh",
     config = function(opt)
         print("lazy config LeaderF")
-        vim.fn.system("./install.sh")
+        vim.g.Lf_ShortcutF = '<leader>ff'
 	    vim.g.Lf_StlColorscheme = 'one'
 	    -- Disable leaderf status line
 	    -- vim.g.Lf_DisableStl = 1 
@@ -125,7 +127,29 @@ return {
 	    --     \      },
 	    --     \  }
 	    -- \ }
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = {"leadref"},
+            callback = function()
+                vim.keymap.set('n', "q", ':q!', {silent = true, buffer = true})
+            end,
+        })
     end,
+    keys = {
+        {"<leader>fr", "<cmd>LeaderfMru<cr>", desc = "most-recent-used-file"},
+        {"<leader>jd", ':<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>', mode = {"n"}, desc = "jump-definition"},
+        {"<leader>jr", ':<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>', mode = {"n"}, desc = "jump-reference"},
+        {"<leader>js", ':<C-U><C-R>=printf("Leaderf! gtags -s %s --auto-jump", expand("<cword>"))<CR><CR>', mode = {"n"}, desc = "jump-symbol"},
+        {"<leader>je", ':<C-U><C-R>=printf("Leaderf! gtags -g %s --auto-jump", expand("<cword>"))<CR><CR>', mode = {"n"}, desc = "jump-egrep"},
+        {"<leader>jp", ':<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>', mode = {"n"}, desc = "previous-jump-results"},
+        {"<leader>jb", ':<C-U><C-R>=printf("Leaderf gtags --current-buffer --result ctags-mod %s", "")<CR><CR>', mode = {"n"}, desc = "current-buf-tags"},
+        {"<leader>jB", ':<C-U><C-R>=printf("Leaderf gtags --all-buffers --result ctags-mod %s", "")<CR><CR>', mode = {"n"}, desc = "all-buf-tags"},
+        {"<leader>ja", ':<C-U><C-R>=printf("Leaderf gtags --all --result ctags-mod %s", "")<CR><CR>', mode = {"n"}, desc = "all-symbols-in-workspace"},
+        {"<leader>sh", '<Plug>LeaderfRgPrompt', mode = {"n"}, desc = "toggole-leaderf-search"},
+        {"<leader>sj", '<Plug>LeaderfRgCwordLiteralNoBoundary<cr>', mode = {"n"}, desc = "leaderf-search-word-under-cursor"},
+        {"<leader>sk", '<Plug>LeaderfRgCwordRegexNoBoundary<cr>', mode = {"n"}, desc = "leaderf-regex-search-word-under-cursor"},
+        {"<leader>sp", '<cmd>Leaderf rg --recall<cr>', desc = "leaderf-last-search"},
+        {"<leader>sl", '<cmd>LeaderfRgInteractive<cr>', desc = "leaderf-search-interactive"},
+    }
 },
 
 }
