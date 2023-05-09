@@ -44,13 +44,15 @@ return {
 	    --         \ }
 
 	    -- for gtags config
-	    if vim.fn.has("mac") then
+	    if 1 == vim.fn.has("mac") then
+		print("mac config gtagsconf")
 	        vim.env.GTAGSCONF="/opt/homebrew/Cellar/global/6.6.9/share/gtags/gtags.conf"
 	        vim.g.Lf_Gtagsconf="/opt/homebrew/Cellar/global/6.6.9/share/gtags/gtags.conf"
-	    elseif vim.fn.has("unix") then
+	    elseif 1 == vim.fn.has("unix") then
+		print("unix config gtagsconf")
 	        vim.env.GTAGSCONF="/usr/share/gtags/gtags.conf"
 	        vim.g.Lf_Gtagsconf="/usr/share/gtags/gtags.conf"
-	    elseif vim.fn.has("win32") then
+	    elseif 1 == vim.fn.has("win32") then
 	    end
 
 	    vim.env.GTAGSLABEL="native-pygments"
