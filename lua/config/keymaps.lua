@@ -11,6 +11,5 @@ vim.keymap.set({"n"}, "n", "nzz")
 vim.keymap.set({"n"}, "N", "Nzz")
 vim.keymap.set({"n"}, "<C-j>", "<cmd>resize +5<cr>", {silent = true})
 vim.keymap.set({"n"}, "<C-k>", "<cmd>resize -5<cr>", {silent = true})
-
 vim.keymap.set({"n"}, "<M-j>", "<cmd>vertical resize -5<cr>", {silent = true})
 vim.keymap.set({"n"}, "<M-k>", "<cmd>vertical resize +5<cr>", {silent = true})
