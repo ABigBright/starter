@@ -42,6 +42,7 @@ return {
         use_libuv_file_watcher = true,
       },
       window = {
+        auto_expand_width = true,
         mappings = {
           ["<space>"] = "none",
         },

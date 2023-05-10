@@ -4,11 +4,12 @@ return {
         lazy = false, -- make sure we load this during startup if it is your main colorscheme
         priority = 1000, -- make sure to load this before all the other start plugins
         init = function()
+            vim.g.Lf_ShortcutF = '<leader>ff'
+            vim.g.Lf_ShortcutB = '<leader>bt'
         end,
         cmd = {"LeaderfFile"},
         build = "./install.sh",
         config = function(opt)
-            vim.g.Lf_ShortcutF = '<leader>ff'
             vim.g.Lf_StlColorscheme = 'one'
             -- Disable leaderf status line
             -- vim.g.Lf_DisableStl = 1 
