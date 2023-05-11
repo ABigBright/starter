@@ -12,6 +12,7 @@ return {
         ["<leader>f"] = { name = "+file/find" },
         ["<leader>ff"] = { "leaderf-file" },
         ["<leader>w"] = { name = "+windows" },
+        ["<leader>t"] = { name = "+tag" },
       },
     },
     config = function(_, opts)
