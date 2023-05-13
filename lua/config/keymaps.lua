@@ -29,13 +29,57 @@ vim.keymap.set({"n"}, "<leader>7", "<cmd>7wincmd w<cr>", {silent = true, desc = 
 vim.keymap.set({"n"}, "<leader>8", "<cmd>8wincmd w<cr>", {silent = true, desc = "which_key_ignore"})
 vim.keymap.set({"n"}, "<leader>9", "<cmd>9wincmd w<cr>", {silent = true, desc = "which_key_ignore"})
 
--- window split
-vim.keymap.set({"n"}, "<leader>wr", ":set splitright<cr>:vert split<cr>", {silent = true})
-vim.keymap.set({"n"}, "<leader>wl", ":set nosplitright<cr>:vert split<cr>", {silent = true})
-vim.keymap.set({"n"}, "<leader>wb", ":set splitbelow<cr>:split<cr>", {silent = true})
-vim.keymap.set({"n"}, "<leader>wu", ":set nosplitbelow<cr>:split<cr>", {silent = true})
-vim.keymap.set({"n"}, "<leader>wo", "<C-W>o", {silent = true})
-vim.keymap.set({"n"}, "<leader>wh", "<C-W>t<C-W>K", {silent = true})
-vim.keymap.set({"n"}, "<leader>wv", "<C-W>t<C-W>H", {silent = true})
-vim.keymap.set({"n"}, "<leader>wp", "<c-w>p", {silent = true})
+vim.keymap.set({"n"}, "<leader>d1", "<cmd>1quit!<cr>", {silent = true, desc = "which_key_ignore"})
+vim.keymap.set({"n"}, "<leader>d2", "<cmd>2quit!<cr>", {silent = true, desc = "which_key_ignore"})
+vim.keymap.set({"n"}, "<leader>d3", "<cmd>3quit!<cr>", {silent = true, desc = "which_key_ignore"})
+vim.keymap.set({"n"}, "<leader>d4", "<cmd>4quit!<cr>", {silent = true, desc = "which_key_ignore"})
+vim.keymap.set({"n"}, "<leader>d5", "<cmd>5quit!<cr>", {silent = true, desc = "which_key_ignore"})
+vim.keymap.set({"n"}, "<leader>d6", "<cmd>6quit!<cr>", {silent = true, desc = "which_key_ignore"})
+vim.keymap.set({"n"}, "<leader>d7", "<cmd>7quit!<cr>", {silent = true, desc = "which_key_ignore"})
+vim.keymap.set({"n"}, "<leader>d8", "<cmd>8quit!<cr>", {silent = true, desc = "which_key_ignore"})
+vim.keymap.set({"n"}, "<leader>d9", "<cmd>9quit!<cr>", {silent = true, desc = "which_key_ignore"})
 
+-- window split
+vim.keymap.set({"n"}, "<leader>wr", ":set splitright<cr>:vert split<cr>", {silent = true, desc = "right-win"})
+vim.keymap.set({"n"}, "<leader>wl", ":set nosplitright<cr>:vert split<cr>", {silent = true, desc = "left-win"})
+vim.keymap.set({"n"}, "<leader>wb", ":set splitbelow<cr>:split<cr>", {silent = true, desc = "bottom-win"})
+vim.keymap.set({"n"}, "<leader>wu", ":set nosplitbelow<cr>:split<cr>", {silent = true, desc = "up-win"})
+vim.keymap.set({"n"}, "<leader>wo", "<C-W>o", {silent = true, desc = "close-all-but-this"})
+vim.keymap.set({"n"}, "<leader>wh", "<C-W>t<C-W>K", {silent = true, desc = "split-horizontal"})
+vim.keymap.set({"n"}, "<leader>wv", "<C-W>t<C-W>H", {silent = true, desc = "split-vertical"})
+vim.keymap.set({"n"}, "<leader>wp", "<c-w>p", {silent = true, desc = "previous-win"})
+
+
+-- neovim config file dir and path
+vim.keymap.set(
+    {"n"}, 
+    "<leader>hi", 
+    function() 
+        local p = vim.fn.stdpath('config') .. "/lua/config/lazy.lua"
+        vim.cmd {cmd = 'e', args = {p} }
+    end, 
+    {silent = true, desc = "init-config"})
+vim.keymap.set(
+    {"n"}, 
+    "<leader>hp", 
+    function() 
+        local p = vim.fn.stdpath('config') .. "/lua/plugins/"
+        vim.cmd {cmd = 'Neotree', args = {p} }
+    end, 
+    {silent = true, desc = "plugin-config"})
+vim.keymap.set(
+    {"n"}, 
+    "<leader>hk", 
+    function() 
+        local p = vim.fn.stdpath('config') .. "/lua/config/keymaps.lua"
+        vim.cmd { cmd = 'e', args = {p} }
+    end, 
+    {silent = true, desc = "keymap-config"})
+vim.keymap.set(
+    {"n"}, 
+    "<leader>hP", 
+    function() 
+        local p = vim.fn.stdpath('data') .. "/lazy/"
+        vim.cmd { cmd = 'Neotree', args = {p} }
+    end, 
+    {silent = true, desc = "plugin-download"})
