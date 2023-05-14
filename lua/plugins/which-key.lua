@@ -11,6 +11,7 @@ return {
         ["<leader>f"] = { name = "+file/find" },
         ["<leader>w"] = { name = "+windows" },
         ["<leader>t"] = { name = "+tag" },
+        ["<leader>l"] = { name = "+move" },
       },
     },
     config = function(_, opts)

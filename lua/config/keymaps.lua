@@ -8,9 +8,10 @@ vim.keymap.set({"n"}, "Q", "<cmd>q!<cr>")
 vim.keymap.set({"n"}, "R", ":source $MYVIMRC<cr>", {silent = false})
 
 -- in normal mode
--- move after search
+-- move and deselect after search
 vim.keymap.set({"n"}, "n", "nzz")
 vim.keymap.set({"n"}, "N", "Nzz")
+vim.keymap.set({"n"}, "<leader><cr>", "<cmd>noh<cr>", {silent = true, desc = "which_key_ignore"})
 
 -- windown resize
 vim.keymap.set({"n"}, "<C-j>", "<cmd>resize +5<cr>", {silent = true})
