@@ -12,6 +12,10 @@ return {
         ["<leader>w"] = { name = "+windows" },
         ["<leader>t"] = { name = "+tag" },
         ["<leader>l"] = { name = "+move" },
+        ["<leader>h"] = { name = "+help" },
+        ["<leader>j"] = { name = "+jump" },
+        ["<leader>c"] = { name = "+comment" },
+        ["<leader>s"] = { name = "+search/style" },
       },
     },
     config = function(_, opts)
