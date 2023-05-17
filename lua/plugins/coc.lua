@@ -216,6 +216,8 @@ return {
 
             -- Resume latest coc list
             { mode = {"n"}, "<leader>ep", ":<C-u>CocListResume<cr>", silent = true, nowait = true, desc = "resume-latest-coclist" },
+
+            { mode = {"n"}, "<leader>sa", ":CocSearch ", nowait = true, desc = "search-workspace" },
         }
     }
 }
