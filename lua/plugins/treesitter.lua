@@ -32,7 +32,10 @@ return {
     },
     ---@type TSConfig
     opts = {
-      highlight = { enable = true },
+      highlight = { 
+        enable = true,
+        additional_vim_regex_highlighting = {'org'}, -- Required for spellcheck, some LaTex highlights and code block highlights that do not have ts grammar
+      },
       indent = { enable = true },
       context_commentstring = { enable = true, enable_autocmd = false },
       ensure_installed = {
@@ -54,6 +57,7 @@ return {
         "vim",
         "vimdoc",
         "yaml",
+        "org",
       },
       incremental_selection = {
         enable = true,
