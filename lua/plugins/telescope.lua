@@ -38,6 +38,12 @@ return {
               --   extension_config_key = value,
               -- }
               -- please take a look at the readme of the extension you want to configure
+                media_files = {
+                  -- filetypes whitelist
+                  -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
+                  filetypes = {"png", "webp", "jpg", "jpeg", "pdf"},
+                  find_cmd = "rg" -- find command (defaults to `fd`)
+                }
             }
         },
         config = true,
