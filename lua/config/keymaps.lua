@@ -84,3 +84,6 @@ vim.keymap.set(
         vim.cmd { cmd = 'Neotree', args = {p} }
     end, 
     {silent = true, desc = "plugin-download"})
+
+vim.keymap.set( {"n"}, "<leader>hl", "<cmd>Lazy<cr>", {silent = true, desc = "Lazy"})
+

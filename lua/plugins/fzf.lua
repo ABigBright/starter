@@ -89,7 +89,7 @@ return {
             { "<leader>bf", "<cmd>Buffers<cr> ", mode = {"n"}, desc = "buffers" },
             { "<leader>hA", "<cmd>Maps<cr> ", mode = {"n"}, desc = "keymaps" },
             { "<leader>hB", "<cmd>Commands<cr> ", mode = {"n"}, desc = "commands" },
-            { "<leader>hf", "<cmd>History<cr> ", mode = {"n"}, desc = "file-history" },
+            { "<leader>hf", "<cmd>History:<cr> ", mode = {"n"}, desc = "file-history" },
             { "<leader>hs", "<cmd>History/<cr> ", mode = {"n"}, desc = "search-history" },
             { "<leader>ht", "<cmd>Helptags<cr> ", mode = {"n"}, desc = "help-tags" },
             { "<leader>hu", "<cmd>Filetypes<cr> ", mode = {"n"}, desc = "filetypes" },
