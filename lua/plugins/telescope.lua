@@ -48,7 +48,6 @@ return {
         },
         config = true,
         keys = {
-            { mode = {"n"}, "<leader>Sl", function() require("telescope._extensions.session-lens.main").search_session() end, desc = "load-session" }
         }
     }
 }

@@ -18,8 +18,18 @@ return {
       {
         mode = { "n" },
         "<leader>Ss",
-        "<cmd>SessionSave<cr>",
-        desc = "save-session",
+        function()
+          require("auto-session").SaveSession(require("auto-session").get_root_dir(), true)
+        end,
+        desc = "save session",
+      },
+      {
+        mode = { "n" },
+        "<leader>Sl",
+        function()
+          require('auto-session.session-lens').search_session()
+        end,
+        desc = "load session",
       },
     },
   },
