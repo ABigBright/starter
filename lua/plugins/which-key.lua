@@ -17,6 +17,7 @@ return {
         ["<leader>j"] = { name = "+jump" },
         ["<leader>c"] = { name = "+comment" },
         ["<leader>s"] = { name = "+search/style" },
+        ["<leader>e"] = { name = "+lsp" },
       },
     },
     config = function(_, opts)
