@@ -1,14 +1,10 @@
 return {
   {
     "rmagatti/auto-session",
-    lazy = true,
-    event = "VeryLazy",
+    lazy = false,
     dependencies = {},
     init = function()
-      -- vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-      -- vim.keymap.set("n", "<C-s>", require("auto-session.session-lens").search_session, {
-      --   noremap = true,
-      -- })
+      vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
     end,
     opts = {
       log_level = "info",
@@ -35,20 +31,20 @@ return {
     },
     config = true,
     keys = {
-      -- {
-      --   "<leader>Ss",
-      --   "<cmd>SessionSave<cr>",
-      --   mode = { "n" },
-      --   desc = "save session",
-      -- },
-      -- {
-      --   "<leader>Sl",
-      --   function()
-      --     require("auto-session.session-lens").search_session(nil)
-      --   end,
-      --   mode = { "n" },
-      --   desc = "load session",
-      -- },
+      {
+        "<leader>Ss",
+        "<cmd>SessionSave<cr>",
+        mode = { "n" },
+        desc = "save session",
+      },
+      {
+        "<leader>Sl",
+        function()
+          require("auto-session.session-lens").search_session(nil)
+        end,
+        mode = { "n" },
+        desc = "load session",
+      },
     },
   },
 }
