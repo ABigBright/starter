@@ -94,8 +94,11 @@ return {
             -- ${name} will be replace with the file name
             vim.g.mkdp_page_title = '「${name}」'
 
+            vim.g.mkdp_filetypes = { 'markdown', 'telekasten' }
+
         end,
         keys = {
+            { mode = {"i"}, "<leader>m", desc = "which_key_ignore" },
             { mode = {"n", "i"}, "<leader>mp", "<Plug>MarkdownPreview", 
                 desc = "markdown-preview", remap = true },
             { mode = {"n", "i"}, "<leader>ms", "<Plug>MarkdownPreviewStop", 

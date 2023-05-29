@@ -189,6 +189,7 @@ return {
             ]])
         end,
         keys = {
+            { mode = {"i"}, "<leader>z", desc = "which_key_ignore" },
             { mode = {"n"}, "<leader>zf", function() require('telekasten').find_notes() end, 
                 desc = "find-notes", silent = true },
             { mode = {"n"}, "<leader>zd", function() require('telekasten').find_daily_notes() end, 
