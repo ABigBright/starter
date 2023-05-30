@@ -30,8 +30,8 @@ return {
           -- documentation = cmp.config.window.bordered(),
         },
         mapping = cmp.mapping.preset.insert({
-          ["<TAB>"] = cmp.mapping.select_next_item({count = 1}),
-          ["<S-TAB>"] = cmp.mapping.select_prev_item({count = 1}),
+          ["<C-j>"] = cmp.mapping.select_next_item({count = 1}),
+          ["<C-k>"] = cmp.mapping.select_prev_item({count = 1}),
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
