@@ -18,6 +18,7 @@ return {
         ["<leader>c"] = { name = "+comment" },
         ["<leader>s"] = { name = "+search/style" },
         ["<leader>e"] = { name = "+lsp" },
+        ["<leader>q"] = { name = "+quickfix" },
       },
     },
     config = function(_, opts)
