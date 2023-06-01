@@ -11,7 +11,7 @@ return {
         config = function(opt)
             vim.g.Lf_StlColorscheme = 'one'
             -- Disable leaderf status line
-            -- vim.g.Lf_DisableStl = 1 
+            -- vim.g.Lf_DisableStl = 1
             vim.g.Lf_StlSeparator = {left= '', right=''}
             vim.g.Lf_WindowHeight = 0.20
             -- vim.g.Lf_WindowPosition = 'top'
@@ -57,9 +57,11 @@ return {
             vim.g.Lf_GtagsAutoGenerate = 1
             vim.g.Lf_Gtagslabel = "native-pygments"
             vim.g.Lf_RootMarkers = {'.root'}
-            -- vim.g.Lf_WindowPosition = 'popup'
-            -- vim.g.Lf_PreviewHorizontalPosition = "center"
-            -- vim.g.Lf_PreviewInPopup = 1
+            vim.g.Lf_WindowPosition = 'popup'
+            vim.g.Lf_PreviewHorizontalPosition = "center"
+            vim.g.Lf_PopupShowStatusline = 0
+            vim.g.Lf_PopupColorscheme = 'onedark'
+            vim.g.Lf_PreviewInPopup = 1
             vim.g.Lf_WorkingDirectoryMode = 'Aac'
             vim.g.Lf_RecurseSubmodules = 1
             vim.g.Lf_GtagsSkipUnreadable = 1
