@@ -11,7 +11,7 @@ return {
         ["<leader>b"] = { name = "+buffer" },
         ["<leader>f"] = { name = "+file/find" },
         ["<leader>w"] = { name = "+windows" },
-        ["<leader>t"] = { name = "+tag" },
+        ["<leader>t"] = { name = "+tag/todo" },
         ["<leader>l"] = { name = "+move" },
         ["<leader>h"] = { name = "+help" },
         ["<leader>j"] = { name = "+jump" },
