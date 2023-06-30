@@ -52,6 +52,7 @@ return {
             end
 
             vim.env.GTAGSLABEL="native-pygments"
+            vim.g.Lf_RootMarkers = {'.root'}
             vim.g.Lf_GtagsGutentags = 0
             vim.g.Lf_GtagsAutoUpdate = 1
             vim.g.Lf_GtagsAutoGenerate = 1
