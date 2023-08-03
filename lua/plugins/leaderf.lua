@@ -58,7 +58,7 @@ return {
             vim.g.Lf_GtagsAutoGenerate = 1
             vim.g.Lf_Gtagslabel = "native-pygments"
             vim.g.Lf_RootMarkers = {'.root'}
-            vim.g.Lf_WindowPosition = 'popup'
+            vim.g.Lf_WindowPosition = 'bottom'
             vim.g.Lf_PreviewHorizontalPosition = "center"
             vim.g.Lf_PopupShowStatusline = 0
             vim.g.Lf_PopupColorscheme = 'onedark'

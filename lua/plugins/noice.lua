@@ -9,12 +9,12 @@ return {
         "folke/which-key.nvim",
         opts = function(_, opts)
           if require("lazyvim.util").has("noice.nvim") then
-            if (opts.defaults) then
-                opts.defaults["<leader>sn"] = { name = "+noice" }
+            if opts.defaults then
+              opts.defaults["<leader>sn"] = { name = "+noice" }
             else
-                opts.defaults = {
-                    ["<leader>sn"] = { name = "+noice" }
-                }
+              opts.defaults = {
+                ["<leader>sn"] = { name = "+noice" },
+              }
             end
           end
         end,
@@ -31,6 +31,9 @@ return {
         bottom_search = true,
         command_palette = true,
         long_message_to_split = true,
+      },
+      messages = {
+        enabled = false,
       },
     },
     -- stylua: ignore
