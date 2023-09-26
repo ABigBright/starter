@@ -20,6 +20,15 @@ return {
         ["<leader>e"] = { name = "+lsp" },
         ["<leader>q"] = { name = "+quickfix" },
       },
+      icons = {
+        breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
+        -- separator = "⇨", -- symbol used between a key and it's label
+        -- separator = "❯", -- symbol used between a key and it's label
+        -- separator = "➡", -- symbol used between a key and it's label
+        -- separator = "", -- symbol used between a key and it's label
+        separator = "󰜴", -- symbol used between a key and it's label
+        group = "+", -- symbol prepended to a group
+      },
     },
     config = function(_, opts)
       local wk = require("which-key")
