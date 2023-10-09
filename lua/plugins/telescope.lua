@@ -22,6 +22,13 @@ return {
             ["<C-k>"] = "move_selection_previous",
           },
         },
+        -- layout_strategy = "horizontal",
+        -- layout_config = {
+        --   height = 0.8,
+        --   preview_cutoff = 120,
+        --   prompt_position = "bottom",
+        --   width = 0.9,
+        -- },
       },
       pickers = {
         -- Default configuration for builtin pickers goes here:
@@ -31,6 +38,17 @@ return {
         -- }
         -- Now the picker_config_key will be applied every time you call this
         -- builtin picker
+
+        buffers = {
+          layout_strategy = "bottom_pane",
+          layout_config = {
+            height = 15,
+            preview_cutoff = 120,
+            -- disable preview
+            preview_width = 0,
+            prompt_position = "bottom",
+          },
+        },
       },
       extensions = {
         -- Your extension configuration goes here:
@@ -55,7 +73,7 @@ return {
     },
     config = true,
     keys = {
-      { "<leader>bt", '<cmd>Telescope buffers<cr>',  desc = "buffer-switch" },
+      { "<leader>bt", "<cmd>Telescope buffers<cr>", desc = "buffer-switch" },
     },
   },
 }
