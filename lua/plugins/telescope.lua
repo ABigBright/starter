@@ -54,8 +54,6 @@ return {
       },
     },
     config = true,
-    keys = {
-      { "<leader>bt", '<cmd>Telescope buffers<cr>',  desc = "buffer-switch" },
-    },
+    keys = {},
   },
 }
