@@ -137,7 +137,7 @@ return {
         end,
         keys = {
             {"<leader>ff", desc = "find-file"},
-            {"<leader>bt", desc = "buffer-switch"},
+            {"<leader>bt", "<cmd>Leaderf buffer --regexMode<cr>", desc = "buffer-switch"},
             {"<leader>fr", "<cmd>LeaderfMru<cr>", desc = "recent-file"},
             {"<leader>jd", ':<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>', silent = true, mode = {"n"}, desc = "jump-definition"},
             {"<leader>jr", ':<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>', silent = true, mode = {"n"}, desc = "jump-reference"},
