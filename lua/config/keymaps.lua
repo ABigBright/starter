@@ -74,3 +74,7 @@ vim.keymap.set({ "n" }, "<leader>hl", "<cmd>Lazy<cr>", { silent = true, desc = "
 -- quickfix
 vim.keymap.set({ "n" }, "<leader>qo", "<cmd>botright cw 10<cr>", { silent = true, desc = "quickfix open" })
 vim.keymap.set({ "n" }, "<leader>qc", "<cmd>ccl<cr>", { silent = true, desc = "quickfix close" })
+
+
+-- graph-easy
+vim.keymap.set({ "v" }, "<leader>ga", ":'<,'>%!graph-easy --as=ascii <cr>", { silent = true, desc = "dot to ascii" })
