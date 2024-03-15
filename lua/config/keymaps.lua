@@ -77,4 +77,4 @@ vim.keymap.set({ "n" }, "<leader>qc", "<cmd>ccl<cr>", { silent = true, desc = "q
 
 
 -- graph-easy
-vim.keymap.set({ "v" }, "<leader>ga", ":'<,'>%!graph-easy --as=ascii <cr>", { silent = true, desc = "dot to ascii" })
+-- vim.keymap.set({ "v" }, "<leader>ga", ":'<,'>%!graph-easy --as=ascii <cr>", { silent = true, desc = "dot to ascii" })
