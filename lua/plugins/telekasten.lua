@@ -228,7 +228,7 @@ return {
             { mode = {"n"}, "<leader>zm", function() require('telekasten').browse_media() end,
                 desc = "browse-media", silent = true },
             { mode = {"n"}, "<leader>za", function() require('telekasten').show_tags() end,
-                desc = "find-daily-notes", silent = true },
+                desc = "find-tags", silent = true },
             { mode = {"n"}, "<leader>zr", function() require('telekasten').rename_note() end,
                 desc = "rename-notes", silent = true },
             { mode = {"i"}, "<leader>z[", function() require('telekasten').insert_link({i = true}) end,
