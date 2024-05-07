@@ -147,9 +147,9 @@ return {
             {"<leader>jb", ':<C-U><C-R>=printf("Leaderf gtags --current-buffer --result ctags-mod %s", "")<CR><CR>', silent = true, mode = {"n"}, desc = "current-buf-tags"},
             {"<leader>jB", ':<C-U><C-R>=printf("Leaderf gtags --all-buffers --result ctags-mod %s", "")<CR><CR>', silent = true, mode = {"n"}, desc = "all-buf-tags"},
             {"<leader>ja", ':<C-U><C-R>=printf("Leaderf gtags --all --result ctags-mod %s", "")<CR><CR>', silent = true, mode = {"n"}, desc = "all-symbols-in-workspace"},
-            {"<leader>sh", '<Plug>LeaderfRgPrompt', mode = {"n"}, desc = "toggole-leaderf-search"},
-            {"<leader>sj", '<Plug>LeaderfRgCwordLiteralNoBoundary<cr>', mode = {"n"}, desc = "leaderf-search-word-under-cursor"},
-            {"<leader>sk", '<Plug>LeaderfRgCwordRegexNoBoundary<cr>', mode = {"n"}, desc = "leaderf-regex-search-word-under-cursor"},
+            {"<leader>sh", ':Leaderf rg -e ', mode = {"n"}, desc = "toggole-leaderf-search"},
+            {"<leader>sj", ':Leaderf rg -F -e <c-r><c-w><cr>', mode = {"n"}, desc = "leaderf-search-word-under-cursor"},
+            {"<leader>sk", ':Leaderf rg -e <c-r><c-w><cr>', mode = {"n"}, desc = "leaderf-regex-search-word-under-cursor"},
             {"<leader>sp", '<cmd>Leaderf rg --recall<cr>', desc = "leaderf-last-search"},
             {"<leader>sl", '<cmd>LeaderfRgInteractive<cr>', desc = "leaderf-search-interactive"},
         }
