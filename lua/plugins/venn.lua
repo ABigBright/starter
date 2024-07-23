@@ -2,6 +2,7 @@ return {
   {
     "ABigBright/venn.nvim",
     branch = "cus_for_briq",
+    enabled = false,
     lazy = true,
     event = "VeryLazy",
     cmd = {
