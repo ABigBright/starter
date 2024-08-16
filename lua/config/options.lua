@@ -31,9 +31,8 @@ vim.o.modifiable = true
 vim.o.fileencoding="utf-8"
 vim.o.fileformat="unix"
 vim.o.autoread = true
-vim.o.nobackup = true
+vim.o.backup = false
 vim.o.updatetime = 500
-vim.o.go=""
 
 if (1 == vim.fn.has("win32")) then
     vim.g.python_host_prog  = 'D:\\Program Files\\Python38\\python.exe'
