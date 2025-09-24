@@ -4,8 +4,8 @@ return {
     branch = "cus_for_briq",
     event = "VeryLazy",
     opts = function()
-      local icons = require("lazyvim.config").icons
-      local Util = require("lazyvim.util")
+      local icons = require("config.init").icons
+      local Util = require("util")
 
       return {
         options = {

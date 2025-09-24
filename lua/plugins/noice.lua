@@ -8,7 +8,7 @@ return {
       {
         "folke/which-key.nvim",
         opts = function(_, opts)
-          if require("lazyvim.util").has("noice.nvim") then
+          if require("util").has("noice.nvim") then
             if opts.defaults then
               opts.defaults["<leader>sn"] = { name = "+noice" }
             else
