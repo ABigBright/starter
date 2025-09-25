@@ -224,7 +224,7 @@ return {
         },
         config = function(_, opts)
             -- Load custom treesitter grammar for org filetype
-            require('orgmode').setup_ts_grammar()
+            -- require('orgmode').setup_ts_grammar()
             require('orgmode').setup(opts)
         end,
         keys = {
