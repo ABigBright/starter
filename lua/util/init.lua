@@ -4,11 +4,14 @@ local M = {}
 
 M.root_patterns = { ".git", "lua" }
 
----@param plugin string
+-- @check whether plugin is exist
+-- @param plugin string
 function M.has(plugin)
   return require("lazy.core.config").plugins[plugin] ~= nil
 end
 
+-- get a high light group foreground color
+-- param string
 function M.fg(name)
   ---@type {foreground?:number}?
   local hl = vim.api.nvim_get_hl and vim.api.nvim_get_hl(0, { name = name }) or vim.api.nvim_get_hl_by_name(name, true)
@@ -26,6 +29,7 @@ function M.on_very_lazy(fn)
   })
 end
 
+---get a plugin's opts
 ---@param name string
 function M.opts(name)
   local plugin = require("lazy.core.config").plugins[name]
@@ -111,6 +115,7 @@ function M.float_term(cmd, opts)
   end
 end
 
+---toggle neovim options, such as `set nu' or `set nonu'
 ---@param silent boolean?
 ---@param values? {[1]:any, [2]:any}
 function M.toggle(option, silent, values)
@@ -148,6 +153,7 @@ function M.deprecate(old, new)
   Util.warn(("`%s` is deprecated. Please use `%s` instead"):format(old, new), { title = "LazyVim" })
 end
 
+-- lazy vim.notify output, notify to buffer at boot process, then use vim.notify in running process after boot.
 function M.lazy_notify()
   local notifs = {}
   local function temp(...)
