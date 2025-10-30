@@ -39,9 +39,7 @@ return {
       },
       {
         "<leader>Sl",
-        function()
-          require("auto-session.session-lens").search_session(nil)
-        end,
+        "<cmd>AutoSession search<cr>",
         mode = { "n" },
         desc = "load session",
       },
