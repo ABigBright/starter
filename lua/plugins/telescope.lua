@@ -1,7 +1,7 @@
 return {
   {
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.0", -- or , { 'branch': '0.1.x' }
+    -- tag = "0.1.0", -- or , { 'branch': '0.1.x' }
     lazy = true,
     event = "VeryLazy",
     dependencies = {
@@ -53,7 +53,9 @@ return {
         },
       },
     },
-    config = true,
+    config = function(_, opts)
+        require('telescope').setup(opts)
+    end,
     keys = {},
   },
 }

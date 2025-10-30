@@ -7,7 +7,7 @@ return {
         dependencies = {
             {
                 'nvim-telescope/telescope.nvim',
-                tag = '0.1.0', -- or , { 'branch': '0.1.x' }
+                -- tag = '0.1.0', -- or , { 'branch': '0.1.x' }
             },
             {
                 'renerocksai/calendar-vim',
