@@ -8,7 +8,8 @@ return {
     opts = {
     },
     config = function(_, opts)
-      vim.g.rooter_patterns = {'.root', '.git'}
+      -- vim.g.rooter_patterns = {'.root', '.git'}
+      vim.g.rooter_patterns = {'.root'}
       vim.g.rooter_silent_chdir = 1
       vim.g.rooter_resolve_links = 1
     end,
