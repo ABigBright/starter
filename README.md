@@ -261,7 +261,7 @@ Vista's default executive is ctags (configured to use `/opt/homebrew/bin/ctags` 
 
 ### Noice
 
-> Noice is a highly experimental plugin that completely replaces the UI for messages, cmdline and the popupmenu. It provides a modern, stylized interface for Neovim's built-in messages, command-line input, LSP hover docs, and search -- with scrollable popups, history browsing, and redirect capabilities.
+> Noice is a highly experimental plugin that completely replaces the UI for messages, cmdline and the popupmenu. It provides a modern, stylized interface for Neovim's built-in messages, command-line input, LSP hover docs, and search -- with scrollable popups, history browsing, and redirect capabilities. Both cmdline_popup and messages are enabled, using popup views for command input and search.
 
 | Key | Mode | Action |
 |---|---|---|
@@ -273,7 +273,7 @@ Vista's default executive is ctags (configured to use `/opt/homebrew/bin/ctags` 
 | `<C-f>` | i/n/s | Scroll LSP hover forward |
 | `<C-b>` | i/n/s | Scroll LSP hover backward |
 
-Note: cmdline UI is disabled (`cmdline.enabled = false`) because it conflicts with LeaderF rg's cursor positioning. Search bottom-bar and command palette presets are still active.
+Noice is temporarily disabled when LeaderF is active (via FileType/BufLeave autocmds) to prevent its popup stealing focus from LeaderF's input window. When you leave LeaderF, noice is automatically re-enabled.
 
 ### nvim-spectre
 

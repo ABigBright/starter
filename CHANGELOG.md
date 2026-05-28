@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Rewrite README with comprehensive documentation: prerequisites, installation guide, directory structure, functional descriptions for each plugin, complete keybindings reference, Vim options summary, and plugin management tips
 - Fix markdown-preview first invocation not working by moving `vim.g.mkdp_*` config from `config()` to `init()`, adding `cmd` and `ft` lazy-load triggers
+- Enable noice cmdline_popup and messages (both were previously disabled for LeaderF compatibility)
+
+### Changed
+- Noice cmdline format icons updated to nerd font icons (command, search, lua, help, input, filter)
+- Search and command input now use popup view instead of bottom bar (`bottom_search = false`, `command_palette = false`)
+
+### Fixed
+- Resolve noice and LeaderF conflict: temporarily disable noice when LeaderF popup is active (FileType leaderf -> noice.disable), re-enable on BufLeave so all noice features work outside LeaderF
 
 ## [0.3.0] - 2025-09-27
 
