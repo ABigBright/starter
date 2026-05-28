@@ -176,7 +176,7 @@ Inside neo-tree, `<Space>` is unmapped (so it doesn't interfere with leader). Fi
 
 ### LeaderF
 
-> LeaderF is an efficient fuzzy finder that helps locate files, buffers, MRUs, gtags, etc. on the fly. It supports multiple search modes (NameOnly, Fuzzy, Regex) and integrates with GNU Global (gtags) for definition/reference/symbol jumping. It also provides rg/ag full-text search with live preview.
+> LeaderF is an efficient fuzzy finder that helps locate files, buffers, MRUs, gtags, etc. on the fly. It supports multiple search modes (NameOnly, Fuzzy, Regex) and integrates with GNU Global (gtags) for definition/reference/symbol jumping. Gtags databases are auto-generated on first use (Lf_GtagsAutoGenerate = 1). It also provides rg/ag full-text search with live preview.
 
 | Key | Mode | Action |
 |---|---|---|
