@@ -5,6 +5,25 @@ return {
         init = function()
             vim.g.Lf_ShortcutF = '<leader>ff'
             vim.g.Lf_ShortcutB = '<leader>bt'
+            -- gtags env vars must be set before LeaderF loads so auto-generate works
+            if 1 == vim.fn.has("mac") then
+                vim.env.GTAGSCONF="/opt/homebrew/Cellar/global/6.6.14/share/gtags/gtags.conf"
+                vim.g.Lf_Gtagsconf="/opt/homebrew/Cellar/global/6.6.14/share/gtags/gtags.conf"
+            elseif 1 == vim.fn.has("unix") then
+                vim.env.GTAGSCONF="/usr/share/gtags/gtags.conf"
+                vim.g.Lf_Gtagsconf="/usr/share/gtags/gtags.conf"
+            end
+            vim.env.GTAGSLABEL="native-pygments"
+            vim.g.Lf_GtagsAutoGenerate = 1
+            vim.g.Lf_GtagsAutoUpdate = 1
+            vim.g.Lf_Gtagslabel = "native-pygments"
+            vim.g.Lf_GtagsSkipUnreadable = 1
+            vim.g.Lf_GtagsSource = 2
+            vim.g.Lf_GtagsfilesCmd = {
+                 git = 'git ls-files --recurse-submodules',
+                 hg = 'hg files',
+                 default = 'rg --no-messages --files'
+                }
         end,
         cmd = {"LeaderfFile"},
         build = "./install.sh",
@@ -41,23 +60,10 @@ return {
             --         \ 'rust': '--rust-kinds=f',
             --         \ }
 
-            -- for gtags config
-            if 1 == vim.fn.has("mac") then
-                vim.env.GTAGSCONF="/opt/homebrew/Cellar/global/6.6.9/share/gtags/gtags.conf"
-                vim.g.Lf_Gtagsconf="/opt/homebrew/Cellar/global/6.6.9/share/gtags/gtags.conf"
-            elseif 1 == vim.fn.has("unix") then
-                vim.env.GTAGSCONF="/usr/share/gtags/gtags.conf"
-                vim.g.Lf_Gtagsconf="/usr/share/gtags/gtags.conf"
-            elseif 1 == vim.fn.has("win32") then
-            end
+            -- for gtags config (moved to init for lazy-load compatibility)
 
-            vim.env.GTAGSLABEL="native-pygments"
             vim.g.Lf_RootMarkers = {'.root'}
             vim.g.Lf_GtagsGutentags = 0
-            vim.g.Lf_GtagsAutoUpdate = 1
-            vim.g.Lf_GtagsAutoGenerate = 1
-            vim.g.Lf_Gtagslabel = "native-pygments"
-            vim.g.Lf_RootMarkers = {'.root'}
             vim.g.Lf_WindowPosition = 'bottom'
             vim.g.Lf_PreviewHorizontalPosition = "center"
             vim.g.Lf_PopupShowStatusline = 0
@@ -65,19 +71,6 @@ return {
             vim.g.Lf_PreviewInPopup = 1
             vim.g.Lf_WorkingDirectoryMode = 'Aac'
             vim.g.Lf_RecurseSubmodules = 1
-            vim.g.Lf_GtagsSkipUnreadable = 1
-
-            -- Gtags accepts a list of files as target files. This option indicates
-            -- where the target files come from. It has 3 values: 0, 1, 2.
-            -- 0 - gtags search the target files by itself.
-            -- 1 - the target files come from FileExplorer.
-            -- 2 - the target files come from |g.Lf_GtagsfilesCmd|.
-            vim.g.Lf_GtagsSource = 2
-            vim.g.Lf_GtagsfilesCmd = {
-                 git = 'git ls-files --recurse-submodules',
-                 hg = 'hg files',
-                 default = 'rg --no-messages --files'
-                }
 
             -- Show icons, icons are shown by default
             -- vim.g.Lf_ShowDevIcons = 1
