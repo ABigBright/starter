@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Resolve noice and LeaderF conflict: temporarily disable noice when LeaderF popup is active (FileType leaderf -> noice.disable), re-enable on BufLeave so all noice features work outside LeaderF
 - LeaderF gtags not auto-generating: move gtags config variables (GTAGSCONF, GTAGSLABEL, Lf_GtagsAutoGenerate, etc.) from `config()` to `init()` so they are set before lazy-load triggers
 - Fix GTAGSCONF path from global 6.6.9 to 6.6.14
+- Fix which-key crash on leader key press: patch `Keys.managed` nil error caused by lazy.nvim 9.14+ removing the `managed` field from its keys handler API
 
 ## [0.3.0] - 2025-09-27
 
