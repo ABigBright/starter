@@ -59,6 +59,16 @@ return {
       },
     },
     config = function(_, opts)
+      -- Fix: lazy.nvim 9.14+ removed Keys.managed, but which-key still
+      -- references it at icons.lua:143. Patch it so the lookup returns
+      -- nil instead of crashing with "attempt to index field 'managed'".
+      local ok, Keys = pcall(require, "lazy.core.handler")
+      if ok and Keys and Keys.handlers and Keys.handlers.keys then
+        local h = Keys.handlers.keys
+        if h.managed == nil then
+          h.managed = {}
+        end
+      end
       local wk = require("which-key")
       wk.setup(opts)
       wk.add(opts.defaults)
