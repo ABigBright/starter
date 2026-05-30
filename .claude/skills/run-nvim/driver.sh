@@ -16,7 +16,7 @@ set -euo pipefail
 
 SESSION="nvim"
 
-TMUX_BIN="/usr/bin/tmux"
+TMUX_BIN="$(command -v tmux 2>/dev/null || echo /opt/homebrew/bin/tmux)"
 _detect_socket() {
   if [[ -n "${TMUX:-}" ]]; then
     local socket="${TMUX%%,*}"

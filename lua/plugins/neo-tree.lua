@@ -18,7 +18,7 @@ return {
       {
         "<leader>ft",
         function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+          require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
         end,
         desc = "Explorer NeoTree (cwd)",
       },
@@ -27,9 +27,8 @@ return {
       vim.cmd([[Neotree close]])
     end,
     init = function()
-      vim.g.neo_tree_remove_legacy_commands = 1
       if vim.fn.argc() == 1 then
-        local stat = vim.loop.fs_stat(vim.fn.argv(0))
+        local stat = vim.uv.fs_stat(vim.fn.argv(0))
         if stat and stat.type == "directory" then
           require("neo-tree")
         end
@@ -38,7 +37,7 @@ return {
     opts = {
       filesystem = {
         bind_to_cwd = false,
-        follow_current_file = true,
+        follow_current_file = { enabled = true },
         use_libuv_file_watcher = true,
       },
       window = {
@@ -60,7 +59,7 @@ return {
           event = "file_opened",
           handler = function(file_path)
             --auto close
-            require("neo-tree").close_all()
+            require("neo-tree.command").execute({ action = "close" })
           end
         },
       },
