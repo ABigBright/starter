@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix GTAGSCONF path from global 6.6.9 to 6.6.14
 - Fix which-key crash on leader key press: patch `Keys.managed` nil error caused by lazy.nvim 9.14+ removing the `managed` field from its keys handler API
 - Fix `vim.tbl_islist` deprecation warning from nui.nvim on Neovim 0.12: resolved by updating nui.nvim upstream (commit b1b3dcd)
+- Fix LeaderF gtags error window focus loss: convert gtags keymaps from printf command strings to Lua functions that disable noice before calling LeaderF, preventing noice cmdline_popup from stealing focus
 
 ## [0.3.0] - 2025-09-27
 

@@ -273,7 +273,7 @@ Vista's default executive is ctags (configured to use `/opt/homebrew/bin/ctags` 
 | `<C-f>` | i/n/s | Scroll LSP hover forward |
 | `<C-b>` | i/n/s | Scroll LSP hover backward |
 
-Noice is temporarily disabled when LeaderF is active (via FileType/BufLeave autocmds) to prevent its popup stealing focus from LeaderF's input window. When you leave LeaderF, noice is automatically re-enabled.
+Noice is temporarily disabled when LeaderF is active -- gtags keymaps call `noice.disable()` before launching LeaderF, and a BufLeave autocmd re-enables noice when you leave the LeaderF window. This prevents noice's cmdline_popup from stealing focus from LeaderF's input or error windows.
 
 ### nvim-spectre
 

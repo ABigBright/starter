@@ -132,14 +132,38 @@ return {
             {"<leader>ff", desc = "find-file"},
             {"<leader>bt", desc = "buffer-switch"},
             {"<leader>fr", "<cmd>LeaderfMru<cr>", desc = "recent-file"},
-            {"<leader>jd", ':<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>', silent = true, mode = {"n"}, desc = "jump-definition"},
-            {"<leader>jr", ':<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>', silent = true, mode = {"n"}, desc = "jump-reference"},
-            {"<leader>js", ':<C-U><C-R>=printf("Leaderf! gtags -s %s --auto-jump", expand("<cword>"))<CR><CR>', silent = true, mode = {"n"}, desc = "jump-symbol"},
-            {"<leader>je", ':<C-U><C-R>=printf("Leaderf! gtags -g %s --auto-jump", expand("<cword>"))<CR><CR>', silent = true, mode = {"n"}, desc = "jump-egrep"},
-            {"<leader>jp", ':<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>', silent = true, mode = {"n"}, desc = "previous-jump-results"},
-            {"<leader>jb", ':<C-U><C-R>=printf("Leaderf gtags --current-buffer --result ctags-mod %s", "")<CR><CR>', silent = true, mode = {"n"}, desc = "current-buf-tags"},
-            {"<leader>jB", ':<C-U><C-R>=printf("Leaderf gtags --all-buffers --result ctags-mod %s", "")<CR><CR>', silent = true, mode = {"n"}, desc = "all-buf-tags"},
-            {"<leader>ja", ':<C-U><C-R>=printf("Leaderf gtags --all --result ctags-mod %s", "")<CR><CR>', silent = true, mode = {"n"}, desc = "all-symbols-in-workspace"},
+            {"<leader>jd", function()
+                if require("util").has("noice.nvim") then require("noice").disable() end
+                vim.cmd(string.format("Leaderf! gtags -d %s --auto-jump", vim.fn.expand("<cword>")))
+            end, silent = true, mode = {"n"}, desc = "jump-definition"},
+            {"<leader>jr", function()
+                if require("util").has("noice.nvim") then require("noice").disable() end
+                vim.cmd(string.format("Leaderf! gtags -r %s --auto-jump", vim.fn.expand("<cword>")))
+            end, silent = true, mode = {"n"}, desc = "jump-reference"},
+            {"<leader>js", function()
+                if require("util").has("noice.nvim") then require("noice").disable() end
+                vim.cmd(string.format("Leaderf! gtags -s %s --auto-jump", vim.fn.expand("<cword>")))
+            end, silent = true, mode = {"n"}, desc = "jump-symbol"},
+            {"<leader>je", function()
+                if require("util").has("noice.nvim") then require("noice").disable() end
+                vim.cmd(string.format("Leaderf! gtags -g %s --auto-jump", vim.fn.expand("<cword>")))
+            end, silent = true, mode = {"n"}, desc = "jump-egrep"},
+            {"<leader>jp", function()
+                if require("util").has("noice.nvim") then require("noice").disable() end
+                vim.cmd("Leaderf gtags --recall")
+            end, silent = true, mode = {"n"}, desc = "previous-jump-results"},
+            {"<leader>jb", function()
+                if require("util").has("noice.nvim") then require("noice").disable() end
+                vim.cmd("Leaderf gtags --current-buffer --result ctags-mod")
+            end, silent = true, mode = {"n"}, desc = "current-buf-tags"},
+            {"<leader>jB", function()
+                if require("util").has("noice.nvim") then require("noice").disable() end
+                vim.cmd("Leaderf gtags --all-buffers --result ctags-mod")
+            end, silent = true, mode = {"n"}, desc = "all-buf-tags"},
+            {"<leader>ja", function()
+                if require("util").has("noice.nvim") then require("noice").disable() end
+                vim.cmd("Leaderf gtags --all --result ctags-mod")
+            end, silent = true, mode = {"n"}, desc = "all-symbols-in-workspace"},
             {"<leader>sh", ':Leaderf rg -e ', mode = {"n"}, desc = "toggole-leaderf-search"},
             {"<leader>sj", ':Leaderf rg -F -e <c-r><c-w><cr>', mode = {"n"}, desc = "leaderf-search-word-under-cursor"},
             {"<leader>sk", ':Leaderf rg -e <c-r><c-w><cr>', mode = {"n"}, desc = "leaderf-regex-search-word-under-cursor"},
