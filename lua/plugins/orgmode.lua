@@ -88,12 +88,12 @@ return {
 
                     -- Linux
                     if vim.fn.executable('notify-send') == 1 then
-                      vim.loop.spawn('notify-send', { args = { string.format('%s\n%s\n%s', title, subtitle, date) }})
+                      vim.uv.spawn('notify-send', { args = { string.format('%s\n%s\n%s', title, subtitle, date) }})
                     end
 
                     -- MacOS
                     if vim.fn.executable('terminal-notifier') == 1 then
-                      vim.loop.spawn('terminal-notifier', { args = { '-title', title, '-subtitle', subtitle, '-message', date }})
+                      vim.uv.spawn('terminal-notifier', { args = { '-title', title, '-subtitle', subtitle, '-message', date }})
                     end
                   end
                 end
