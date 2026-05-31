@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Move noice sub-menu from `<leader>sn` to `<leader>n` (nl/nh/na/nd/ne) and notify dismiss from `<leader>un` to `<leader>nn`
 - Add which-key groups: `<leader>m` (markdown), `<leader>o` (orgmode), `<leader>z` (zettelkasten), `<leader>S` (session), `<leader>n` (noice/notify)
 - Add human-readable which-key descriptions across all keymaps (keymaps.lua, leaderf.lua, fzf.lua, telekasten.lua, todo-comments.lua, vista.lua, markdown-preview.lua, tabular.lua, easymotion.lua, luasnip.lua, noice.lua, which-key.lua)
+- Update README.md keybindings reference to reflect `<leader>n` group, `<leader>nn` notify dismiss, and new which-key groups (m/o/S/z)
 
 ## [0.3.0] - 2025-09-27
 

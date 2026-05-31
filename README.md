@@ -266,10 +266,11 @@ Vista's default executive is ctags (configured to use `/opt/homebrew/bin/ctags` 
 | Key | Mode | Action |
 |---|---|---|
 | `<S-Enter>` | c | Redirect current cmdline command |
-| `<leader>snl` | n | Show last noice message |
-| `<leader>snh` | n | Show noice message history |
-| `<leader>sna` | n | Show all noice messages |
-| `<leader>snd` | n | Dismiss all notifications |
+| `<leader>nl` | n | Show last noice message |
+| `<leader>nh` | n | Show noice message history |
+| `<leader>na` | n | Show all noice messages |
+| `<leader>nd` | n | Disable noice |
+| `<leader>ne` | n | Enable noice |
 | `<C-f>` | i/n/s | Scroll LSP hover forward |
 | `<C-b>` | i/n/s | Scroll LSP hover backward |
 
@@ -425,7 +426,7 @@ Agenda files: `~/zettelkasten/org/agenda/*.org` and `~/zettelkasten/org/work/wee
 
 | Key | Mode | Action |
 |---|---|---|
-| `<leader>un` | n | Dismiss all pending notifications |
+| `<leader>nn` | n | Dismiss all pending notifications |
 
 ### Venn
 
@@ -458,10 +459,10 @@ Press `<leader>` and wait ~200ms. which-key shows a popup with all groups and si
 - `<leader>j` -- jump (gtags)
 - `<leader>l` -- move (easymotion)
 - `<leader>m` -- markdown
+- `<leader>n` -- noice/notify
 - `<leader>o` -- orgmode
 - `<leader>q` -- quickfix
 - `<leader>s` -- search/style
-- `<leader>sn` -- noice
 - `<leader>S` -- session
 - `<leader>t` -- tag/todo
 - `<leader>w` -- windows
