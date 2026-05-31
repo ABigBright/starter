@@ -26,6 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix neo-tree migration warnings: replace `vim.loop` with `vim.uv` (deprecated in Neovim 0.10+), convert `follow_current_file` from boolean to table format (`{ enabled = true }`), use canonical `command.execute({ action = "close" })` instead of `close_all()`, remove obsolete `neo_tree_remove_legacy_commands`
 - Fix `vim.lsp.get_active_clients()` deprecation warning: replace with `vim.lsp.get_clients()` in util/init.lua
 - Replace all remaining `vim.loop` calls with `vim.uv` across config (util/init.lua, lazy.lua, orgmode.lua)
+- Add `<leader>nd` (noice disable) and `<leader>ne` (noice enable) toggle commands for manual noice control
+- Move noice sub-menu from `<leader>sn` to `<leader>n` (nl/nh/na/nd/ne) and notify dismiss from `<leader>un` to `<leader>nn`
+- Add which-key groups: `<leader>m` (markdown), `<leader>o` (orgmode), `<leader>z` (zettelkasten), `<leader>S` (session), `<leader>n` (noice/notify)
+- Add human-readable which-key descriptions across all keymaps (keymaps.lua, leaderf.lua, fzf.lua, telekasten.lua, todo-comments.lua, vista.lua, markdown-preview.lua, tabular.lua, easymotion.lua, luasnip.lua, noice.lua, which-key.lua)
 
 ## [0.3.0] - 2025-09-27
 

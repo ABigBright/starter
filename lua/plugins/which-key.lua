@@ -20,7 +20,7 @@ return {
         },
       },
 
-      defaults = { 
+      defaults = {
         {
           mode = { "n", "v" },
           { "<leader><tab>", group = "tabs" },
@@ -31,11 +31,15 @@ return {
           { "<leader>h", group = "help" },
           { "<leader>j", group = "jump" },
           { "<leader>l", group = "move" },
+          { "<leader>m", group = "markdown" },
+          { "<leader>n", group = "noice/notify" },
+          { "<leader>o", group = "orgmode" },
           { "<leader>q", group = "quickfix" },
           { "<leader>s", group = "search/style" },
-          { "<leader>sn", group = "noice" },
           { "<leader>t", group = "tag/todo" },
           { "<leader>w", group = "windows" },
+          { "<leader>z", group = "zettelkasten" },
+          { "<leader>S", group = "session" },
         },
       },
       icons = {

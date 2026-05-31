@@ -3,23 +3,6 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    dependencies = {
-      -- which key integration
-      {
-        "folke/which-key.nvim",
-        opts = function(_, opts)
-          if require("util").has("noice.nvim") then
-            if opts.defaults then
-              opts.defaults["<leader>sn"] = { name = "+noice" }
-            else
-              opts.defaults = {
-                ["<leader>sn"] = { name = "+noice" },
-              }
-            end
-          end
-        end,
-      },
-    },
     opts = {
       cmdline = {
         enabled = true,
@@ -90,10 +73,11 @@ return {
     -- stylua: ignore
     keys = {
       { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
-      { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-      { "<leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
-      { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
-      { "<leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
+      { "<leader>nl", function() require("noice").cmd("last") end, desc = "Last message" },
+      { "<leader>nh", function() require("noice").cmd("history") end, desc = "Message history" },
+      { "<leader>na", function() require("noice").cmd("all") end, desc = "All messages" },
+      { "<leader>nd", function() require("noice").disable() end, desc = "Noice disable" },
+      { "<leader>ne", function() require("noice").enable() end, desc = "Noice enable" },
       { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
       { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
     },

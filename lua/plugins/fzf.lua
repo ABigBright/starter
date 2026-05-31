@@ -80,19 +80,19 @@ return {
             vim.g.fzf_files_options = { '--bind', 'ctrl-n:preview-page-down,ctrl-p:preview-page-up' }
         end,
         keys = {
-            { "<leader>fF", "<cmd>Files<cr>", mode = {"n"}, desc = "fzf-files" },
-            { "<leader>fg", "<cmd>GFiles<cr>", mode = {"n"}, desc = "git-files" },
-            { "<leader>fG", "<cmd>GFiles?<cr>", mode = {"n"}, desc = "git-modified-files" },
-            { "<leader>sg", ":Rg ", mode = {"n"}, desc = "rg-search-workspace" },
-            { "<leader>sm", ":Ag ", mode = {"n"}, desc = "ag-search-workspace" },
-            { "<leader>bf", "<cmd>Buffers<cr> ", mode = {"n"}, desc = "buffers" },
-            { "<leader>hA", "<cmd>Maps<cr> ", mode = {"n"}, desc = "keymaps" },
-            { "<leader>hB", "<cmd>Commands<cr> ", mode = {"n"}, desc = "commands" },
-            { "<leader>hf", "<cmd>History:<cr> ", mode = {"n"}, desc = "file-history" },
-            { "<leader>hs", "<cmd>History/<cr> ", mode = {"n"}, desc = "search-history" },
-            { "<leader>ht", "<cmd>Helptags<cr> ", mode = {"n"}, desc = "help-tags" },
-            { "<leader>hu", "<cmd>Filetypes<cr> ", mode = {"n"}, desc = "filetypes" },
-            { "<leader>jm", "<cmd>Marks<cr> ", mode = {"n"}, desc = "all-marks" },
+            { "<leader>fF", "<cmd>Files<cr>", mode = {"n"}, desc = "Find files (fzf)" },
+            { "<leader>fg", "<cmd>GFiles<cr>", mode = {"n"}, desc = "Find git files" },
+            { "<leader>fG", "<cmd>GFiles?<cr>", mode = {"n"}, desc = "Find git modified" },
+            { "<leader>sg", ":Rg ", mode = {"n"}, desc = "Ripgrep search" },
+            { "<leader>sm", ":Ag ", mode = {"n"}, desc = "Silver search" },
+            { "<leader>bf", "<cmd>Buffers<cr> ", mode = {"n"}, desc = "Switch buffers" },
+            { "<leader>hA", "<cmd>Maps<cr> ", mode = {"n"}, desc = "Show all keymaps" },
+            { "<leader>hB", "<cmd>Commands<cr> ", mode = {"n"}, desc = "Show all commands" },
+            { "<leader>hf", "<cmd>History:<cr> ", mode = {"n"}, desc = "File command history" },
+            { "<leader>hs", "<cmd>History/<cr> ", mode = {"n"}, desc = "Search command history" },
+            { "<leader>ht", "<cmd>Helptags<cr> ", mode = {"n"}, desc = "Browse help tags" },
+            { "<leader>hu", "<cmd>Filetypes<cr> ", mode = {"n"}, desc = "Browse filetypes" },
+            { "<leader>jm", "<cmd>Marks<cr> ", mode = {"n"}, desc = "Show all marks" },
         }
     }
 }

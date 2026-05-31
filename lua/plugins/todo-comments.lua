@@ -32,43 +32,43 @@ return {
     keys = {
       {
         "<leader>ts",
-        desc = "todo tag",
+        desc = "Todo search prefix",
         mode = "n",
       },
       {
         "<leader>tsa",
         ":TodoQuickFix keywords=FIXME,TODO,XXX,HACK cwd=./",
-        desc = "todo all search",
+        desc = "Search all TODO/FIXME/HACK",
         mode = "n",
       },
       {
         "<leader>tsf",
         ":TodoQuickFix keywords=FIXME cwd=./",
-        desc = "fixme search",
+        desc = "Search FIXME",
         mode = "n",
       },
       {
         "<leader>tst",
         ":TodoQuickFix keywords=TODO cwd=./",
-        desc = "todo search",
+        desc = "Search TODO",
         mode = "n",
       },
       {
         "<leader>tsx",
         ":TodoQuickFix keywords=XXX cwd=./",
-        desc = "xxx search",
+        desc = "Search XXX",
         mode = "n",
       },
       {
         "<leader>tsh",
         ":TodoQuickFix keywords=HACK cwd=./",
-        desc = "hack search",
+        desc = "Search HACK",
         mode = "n",
       },
       {
         "<leader>tsc",
         ":TodoQuickFix keywords=",
-        desc = "cus search with keywords and cwd",
+        desc = "Custom keyword search",
         mode = "n",
       }
     },

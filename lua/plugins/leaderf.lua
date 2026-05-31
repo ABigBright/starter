@@ -129,46 +129,46 @@ return {
             })
         end,
         keys = {
-            {"<leader>ff", desc = "find-file"},
-            {"<leader>bt", desc = "buffer-switch"},
-            {"<leader>fr", "<cmd>LeaderfMru<cr>", desc = "recent-file"},
+            {"<leader>ff", desc = "Find file"},
+            {"<leader>bt", desc = "Switch buffer"},
+            {"<leader>fr", "<cmd>LeaderfMru<cr>", desc = "Recent files"},
             {"<leader>jd", function()
                 if require("util").has("noice.nvim") then require("noice").disable() end
                 vim.cmd(string.format("Leaderf! gtags -d %s --auto-jump", vim.fn.expand("<cword>")))
-            end, silent = true, mode = {"n"}, desc = "jump-definition"},
+            end, silent = true, mode = {"n"}, desc = "Jump to definition"},
             {"<leader>jr", function()
                 if require("util").has("noice.nvim") then require("noice").disable() end
                 vim.cmd(string.format("Leaderf! gtags -r %s --auto-jump", vim.fn.expand("<cword>")))
-            end, silent = true, mode = {"n"}, desc = "jump-reference"},
+            end, silent = true, mode = {"n"}, desc = "Jump to references"},
             {"<leader>js", function()
                 if require("util").has("noice.nvim") then require("noice").disable() end
                 vim.cmd(string.format("Leaderf! gtags -s %s --auto-jump", vim.fn.expand("<cword>")))
-            end, silent = true, mode = {"n"}, desc = "jump-symbol"},
+            end, silent = true, mode = {"n"}, desc = "Jump to symbol"},
             {"<leader>je", function()
                 if require("util").has("noice.nvim") then require("noice").disable() end
                 vim.cmd(string.format("Leaderf! gtags -g %s --auto-jump", vim.fn.expand("<cword>")))
-            end, silent = true, mode = {"n"}, desc = "jump-egrep"},
+            end, silent = true, mode = {"n"}, desc = "Jump to grep match"},
             {"<leader>jp", function()
                 if require("util").has("noice.nvim") then require("noice").disable() end
                 vim.cmd("Leaderf gtags --recall")
-            end, silent = true, mode = {"n"}, desc = "previous-jump-results"},
+            end, silent = true, mode = {"n"}, desc = "Recall last jump"},
             {"<leader>jb", function()
                 if require("util").has("noice.nvim") then require("noice").disable() end
                 vim.cmd("Leaderf gtags --current-buffer --result ctags-mod")
-            end, silent = true, mode = {"n"}, desc = "current-buf-tags"},
+            end, silent = true, mode = {"n"}, desc = "Buffer tags"},
             {"<leader>jB", function()
                 if require("util").has("noice.nvim") then require("noice").disable() end
                 vim.cmd("Leaderf gtags --all-buffers --result ctags-mod")
-            end, silent = true, mode = {"n"}, desc = "all-buf-tags"},
+            end, silent = true, mode = {"n"}, desc = "All buffer tags"},
             {"<leader>ja", function()
                 if require("util").has("noice.nvim") then require("noice").disable() end
                 vim.cmd("Leaderf gtags --all --result ctags-mod")
-            end, silent = true, mode = {"n"}, desc = "all-symbols-in-workspace"},
-            {"<leader>sh", ':Leaderf rg -e ', mode = {"n"}, desc = "toggole-leaderf-search"},
-            {"<leader>sj", ':Leaderf rg -F -e <c-r><c-w><cr>', mode = {"n"}, desc = "leaderf-search-word-under-cursor"},
-            {"<leader>sk", ':Leaderf rg -e <c-r><c-w><cr>', mode = {"n"}, desc = "leaderf-regex-search-word-under-cursor"},
-            {"<leader>sp", '<cmd>Leaderf rg --recall<cr>', desc = "leaderf-last-search"},
-            {"<leader>sl", '<cmd>LeaderfRgInteractive<cr>', desc = "leaderf-search-interactive"},
+            end, silent = true, mode = {"n"}, desc = "Workspace symbols"},
+            {"<leader>sh", ':Leaderf rg -e ', mode = {"n"}, desc = "Rg search"},
+            {"<leader>sj", ':Leaderf rg -F -e <c-r><c-w><cr>', mode = {"n"}, desc = "Search word under cursor"},
+            {"<leader>sk", ':Leaderf rg -e <c-r><c-w><cr>', mode = {"n"}, desc = "Regex search word"},
+            {"<leader>sp", '<cmd>Leaderf rg --recall<cr>', desc = "Recall last search"},
+            {"<leader>sl", '<cmd>LeaderfRgInteractive<cr>', desc = "Interactive rg search"},
         }
     },
 }

@@ -105,22 +105,22 @@ return {
                     vim.fn['vista#sidebar#Toggle']()
                 end, 
                 mode = {"n", "v"}, 
-                desc = "tag-list"
+                desc = "Toggle tag sidebar"
             },
             {
-                "<leader>tp", 
-                function() 
-                    vim.g.vista_stay_on_open = 0 
+                "<leader>tp",
+                function()
+                    vim.g.vista_stay_on_open = 0
                     vim.fn['vista#sidebar#Toggle']()
-                end, 
-                mode = {"n", "v"}, 
-                desc = "tag-preview"
+                end,
+                mode = {"n", "v"},
+                desc = "Open tag and jump"
             },
             {
-                "<leader>tc", 
+                "<leader>tc",
                 "<cmd>Vista coc<cr>",
-                mode = {"n", "v"}, 
-                desc = "tag-preview"
+                mode = {"n", "v"},
+                desc = "Open tag list (coc)"
             },
         },
     }

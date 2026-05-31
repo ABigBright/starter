@@ -21,10 +21,10 @@ return {
         function()
           return require("luasnip").expand_or_jumpable() and "<Plug>luasnip-expand-or-jump" or "<tab>"
         end,
-        expr = true, silent = true, mode = "i",
+        expr = true, silent = true, mode = "i", desc = "Expand snippet or jump",
       },
-      { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+      { "<tab>", function() require("luasnip").jump(1) end, mode = "s", desc = "Jump snippet forward" },
+      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" }, desc = "Jump snippet backward" },
     },
   },
 }

@@ -9,7 +9,7 @@ return {
             vim.g.EasyMotion_do_mapping = false
         end,
         keys = {
-            {"<leader>si", ":Tabularize /", mode = {"n", "v"}, desc = "indent-with"},
+            {"<leader>si", ":Tabularize /", mode = {"n", "v"}, desc = "Align by pattern"},
         }
     }
 }

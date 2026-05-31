@@ -8,7 +8,7 @@ return {
         config = function()
         end,
         keys = {
-	        {"<leader>l", "<Plug>(easymotion-prefix)", mode = {"n"}},
+	        {"<leader>l", "<Plug>(easymotion-prefix)", mode = {"n"}, desc = "EasyMotion prefix"},
 
             -- need input char after this
             {"<Leader>lf", desc = "Find {char} to the right"},

@@ -35,11 +35,11 @@ return {
         keys = {
             { mode = {"i"}, "<leader>m", desc = "which_key_ignore" },
             { mode = {"n", "i"}, "<leader>mp", "<Plug>MarkdownPreview",
-                desc = "markdown-preview", remap = true },
+                desc = "Start markdown preview", remap = true },
             { mode = {"n", "i"}, "<leader>ms", "<Plug>MarkdownPreviewStop",
-                desc = "markdown-preview-stop", remap = true },
+                desc = "Stop markdown preview", remap = true },
             { mode = {"n", "i"}, "<leader>mt", "<Plug>MarkdownPreviewToggle",
-                desc = "markdown-preview-toggle", remap = true }
+                desc = "Toggle markdown preview", remap = true }
         }
     }
 }
