@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - LeaderF gtags not auto-generating: move gtags config variables (GTAGSCONF, GTAGSLABEL, Lf_GtagsAutoGenerate, etc.) from `config()` to `init()` so they are set before lazy-load triggers
 - Fix GTAGSCONF path from global 6.6.9 to 6.6.14
 - Fix which-key crash on leader key press: patch `Keys.managed` nil error caused by lazy.nvim 9.14+ removing the `managed` field from its keys handler API
-- Fix `vim.tbl_islist` deprecation warning from nui.nvim on Neovim 0.12: resolved by updating nui.nvim upstream (commit b1b3dcd)
+- Fix orgmode treesitter `inline_code_block` query error: use orgmode's own grammar installer (`:Org install_treesitter_grammar`) instead of deprecated `setup_ts_grammar()`, re-enable 'org' in treesitter ensure_installed
 - Fix LeaderF gtags error window focus loss: convert gtags keymaps from printf command strings to Lua functions that disable noice before calling LeaderF, preventing noice cmdline_popup from stealing focus
 - Fix neo-tree migration warnings: replace `vim.loop` with `vim.uv` (deprecated in Neovim 0.10+), convert `follow_current_file` from boolean to table format (`{ enabled = true }`), use canonical `command.execute({ action = "close" })` instead of `close_all()`, remove obsolete `neo_tree_remove_legacy_commands`
 - Fix `vim.lsp.get_active_clients()` deprecation warning: replace with `vim.lsp.get_clients()` in util/init.lua
