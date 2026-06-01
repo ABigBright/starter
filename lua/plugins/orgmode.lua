@@ -223,8 +223,12 @@ return {
             },
         },
         config = function(_, opts)
-            -- Load custom treesitter grammar for org filetype
-            -- require('orgmode').setup_ts_grammar()
+            -- Install/update orgmode's own treesitter grammar (v2.0.4)
+            -- which includes newer node types (inline_code_block, etc.)
+            -- not present in nvim-treesitter's org parser.
+            -- This replaces the old setup_ts_grammar() API.
+            local ts_install = require('orgmode.utils.treesitter.install')
+            ts_install.install()
             require('orgmode').setup(opts)
         end,
         keys = {
