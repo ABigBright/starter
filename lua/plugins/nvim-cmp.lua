@@ -93,18 +93,6 @@ return {
         }),
       })
 
-      -- Set up lspconfig.
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
-      -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-      vim.lsp.config("clangd", {
-        capabilities = capabilities,
-      })
-      vim.lsp.config("jsonls", {
-        capabilities = capabilities,
-      })
-      vim.lsp.config("lua_ls", {
-        capabilities = capabilities,
-      })
     end,
     keys = {},
   },

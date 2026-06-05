@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add dedicated LSP plugin files (`mason.lua`, `nvim-lspconfig.lua`) ported from LazyVim, with full Chinese comments explaining each section: diagnostics configuration (underline, virtual_text with severity icons, signs), inlay hints, LSP-driven code folding, codelens auto-refresh, server configuration with `["*"]` global defaults, LspAttach keymaps (`K`/`gd`/`gr`/`gI`/`gy`/`gD`/`gK`/`<leader>ea`/`<leader>er`/`<leader>el`/`<leader>ec`), cmp-like capabilities generation, server-by-server initialization with mason-lspconfig integration, and custom setup hooks
+- Add mason.nvim and mason-lspconfig.nvim plugins for automatic LSP server installation and enablement
 - Rewrite README with comprehensive documentation: prerequisites, installation guide, directory structure, functional descriptions for each plugin, complete keybindings reference, Vim options summary, and plugin management tips
+
+### Changed
+- Move LSP configuration out of `nvim-cmp.lua` into dedicated `nvim-lspconfig.lua`; remove inline `vim.lsp.config("clangd"/"jsonls"/"lua_ls")` calls from cmp config
 - Fix markdown-preview first invocation not working by moving `vim.g.mkdp_*` config from `config()` to `init()`, adding `cmd` and `ft` lazy-load triggers
 - Enable noice cmdline_popup and messages (both were previously disabled for LeaderF compatibility)
 

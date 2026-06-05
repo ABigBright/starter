@@ -74,11 +74,13 @@ Optional but recommended:
       lualine.lua
       luasnip.lua
       markdown-preview.lua
+      mason.lua
       neo-tree.lua
       nerdcommenter.lua
       noice.lua
       nvim-bqf.lua
       nvim-cmp.lua
+      nvim-lspconfig.lua
       nvim-notify.lua
       nvim-spectre.lua
       orgmode.lua
@@ -284,9 +286,54 @@ Noice is temporarily disabled when LeaderF is active -- gtags keymaps call `noic
 |---|---|---|
 | `<leader>sr` | n | Open spectre (search & replace across files) |
 
+### LSP
+
+> nvim-lspconfig provides quickstart configurations for the built-in LSP client. mason.nvim and mason-lspconfig.nvim manage automatic installation and enablement of language servers. Diagnostics, inlay hints, code folding, and code lenses are configured with sensible defaults.
+
+| Key | Mode | Action |
+|---|---|---|
+| `K` | n | LSP hover (show documentation) |
+| `gd` | n | Goto definition |
+| `gr` | n | Goto references |
+| `gI` | n | Goto implementation |
+| `gy` | n | Goto type definition |
+| `gD` | n | Goto declaration |
+| `gK` | n | Signature help |
+| `<C-k>` | i | Signature help (insert mode) |
+| `<leader>ea` | n/v | Code action (quick fix) |
+| `<leader>er` | n | Rename symbol |
+| `<leader>el` | n | LSP info |
+| `<leader>ec` | n/v | Run code lens |
+| `<leader>cm` | n | Open Mason package manager |
+
+**Adding new LSP servers:** Add a key to `servers` in `lua/plugins/nvim-lspconfig.lua`. For example:
+```lua
+servers = {
+  pyright = true,          -- enable with defaults (mason will install it)
+  gopls = { mason = false }, -- use system-installed gopls
+}
+```
+
+**Disabling a server:** Set `enabled = false`:
+```lua
+servers = {
+  lua_ls = { enabled = false },
+}
+```
+
+**Custom setup hook:** Use `opts.setup` to intercept a server's initialization:
+```lua
+setup = {
+  tsserver = function(_, opts)
+    require("typescript").setup({ server = opts })
+    return true  -- prevent default vim.lsp.config flow
+  end,
+}
+```
+
 ### nvim-cmp
 
-> nvim-cmp is a completion plugin for Neovim coded in Lua. It provides intelligent auto-completion as you type, drawing from multiple sources (LSP, buffer words, file paths, snippets). It supports ghost text (inline preview), documentation scrolling, and snippet expansion integration.
+> nvim-cmp is a completion plugin for Neovim coded in Lua. It provides intelligent auto-completion as you type, drawing from multiple sources (LSP, buffer words, file paths, snippets). It supports ghost text (inline preview), documentation scrolling, and snippet expansion integration. LSP capabilities are configured separately in `nvim-lspconfig.lua`.
 
 | Key | Mode | Action |
 |---|---|---|
@@ -491,7 +538,9 @@ These plugins are loaded on `VeryLazy` event or automatically, with no custom ke
 | **vim-markdown-toc** | Generate and update markdown table of contents (TOC). Supports GitHub-flavored markdown (GFM) and standard markdown formats. | `:GenTocGFM` -- generate GFM TOC / `:GenTocMarkdown` -- standard TOC / `:UpdateToc` -- refresh existing TOC |
 | **dressing.nvim** | Neovim plugin to improve the default `vim.ui.select` and `vim.ui.input` interfaces. Replaces the boring default prompts with styled floating windows using telescope/fzf-style UI. | Works automatically when any plugin calls `vim.ui.select` or `vim.ui.input` |
 | **nvim-bqf** | Better quickfix list. Enhances the built-in quickfix window with fzf integration, preview window, and syntax highlighting, making `:copen` much more useful. | Works automatically in quickfix windows |
-| **nvim-lspconfig** | Neovim LSP configuration helper. Provides quickstart configurations for the built-in LSP client, connecting Neovim to language servers like clangd, lua_ls, jsonls, etc. | Works automatically; LSP servers are configured in `nvim-cmp.lua` |
+| **mason.nvim** | Portable package manager for LSP servers, linters, formatters and tools. Auto-installs `stylua` and `shfmt` on startup. | `<leader>cm` or `:Mason` to open the UI; install new tools via the Mason interface |
+| **mason-lspconfig.nvim** | Bridge between mason and lspconfig. Ensures LSP servers installed via mason are automatically enabled. | Works automatically; see LSP section above |
+| **nvim-lspconfig** | Neovim LSP configuration helper. Provides quickstart configurations for built-in LSP client. Keymaps and server defaults configured in `nvim-lspconfig.lua`. | Works automatically; see LSP keybindings section above |
 
 ## Color Scheme
 
@@ -505,9 +554,29 @@ To switch theme, use `:colorscheme tokyonight` or `:colorscheme catppuccin`.
 
 ## LSP Integration
 
-This config uses nvim-lspconfig (included as a dependency of nvim-cmp) for LSP. Capabilities are configured for clangd, jsonls, and lua_ls. To add more LSP servers, edit `lua/plugins/nvim-cmp.lua` and add entries to the `vim.lsp.config()` calls in the config function.
+LSP is configured through three plugin files:
 
-Alternatively, you can install and configure language servers via Mason (`:Mason`).
+| File | Responsibility |
+|---|---|
+| `lua/plugins/nvim-lspconfig.lua` | LSP client config: diagnostics, keymaps, server defaults, inlay hints, folding, codelens, per-server settings |
+| `lua/plugins/mason.lua` | LSP server / formatter / linter package manager (`:Mason` or `<leader>cm`) |
+| `lua/plugins/nvim-cmp.lua` | Completion UI (depends on LSP for `nvim_lsp` source) |
+
+**How it works:**
+1. `mason.nvim` + `mason-lspconfig.nvim` auto-install and enable LSP servers
+2. `nvim-lspconfig.lua` defines global `["*"]` defaults (capabilities, keymaps) and per-server overrides (e.g. `lua_ls` settings)
+3. When a matching file is opened, the LSP server starts and attaches to the buffer
+4. `LspAttach` autocmds register buffer-local keymaps and enable inlay hints / folding / codelens
+5. Diagnostics use icons from `config.init.icons` with virtual text and sign column markers
+
+**Adding a new server:**
+```lua
+-- in nvim-lspconfig.lua opts.servers:
+pyright = true,              -- mason installs & enables it
+rust_analyzer = { mason = false }, -- use system-installed binary
+```
+
+**Mason-installed tools (formatters):** `stylua`, `shfmt` — defined in `mason.lua` `ensure_installed`.
 
 ## Vim Options Summary
 
