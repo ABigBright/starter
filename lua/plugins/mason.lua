@@ -1,7 +1,7 @@
 return {
   {
     "mason-org/mason.nvim",
-    cmd = "Mason",
+    event = "VeryLazy", -- 启动时加载，确保 LSP server 的 PATH 正确
     keys = { { "<leader>em", "<cmd>Mason<cr>", desc = "Mason" } },
     build = ":MasonUpdate",
     opts_extend = { "ensure_installed" },
@@ -40,7 +40,6 @@ return {
   {
     "mason-org/mason-lspconfig.nvim",
     -- 桥接：mason 安装 → lspconfig 自动启用
-    -- 具体配置在 nvim-lspconfig.lua 中完成
-    lazy = true,
+    -- 具体配置在 nvim-lspconfig.lua 中完成（mason_lsp.setup() 调用）
   },
 }

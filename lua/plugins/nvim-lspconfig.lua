@@ -56,11 +56,11 @@ return {
         },
 
         -- ================================================================
-        -- servers — LSP server 配置
-        -- server = true   → 启用，全部默认
-        -- server = false  → 禁用
-        -- server = {...}  → 启用，使用自定义配置
-        -- mason = false   → 不用 mason 管理此 server
+        -- servers — LSP server 自定义配置
+        -- server = {...}  → 自定义配置，覆盖默认值
+        -- server = false  → 禁用（已安装也不会自动启动）
+        -- mason = false   → 不用 mason 管理此 server（用系统已安装的）
+        -- 无需 server = true：8d 段自动 enable 所有已安装的 mason server
         -- ================================================================
         servers = {
           -- ["*"] 全局默认配置，应用到所有 LSP server
@@ -284,6 +284,31 @@ return {
       end
 
       -- ================================================================
+      -- 6b. 加载 lspconfig 为某个 server 提供的默认配置
+      --     nvim-lspconfig v2.9+ 的新格式在 lsp/<server>.lua
+      --     旧格式在 lspconfig/configs/<server>.lua（已废弃但仍有效）
+      --     返回 nil 表示找不到默认配置
+      -- ================================================================
+      local function get_lspconfig_default(server)
+        -- nvim-lspconfig v2.9+ 新格式在插件根目录 lsp/<server>.lua（vim.lsp.Config 格式）
+        -- 优点: root_markers 代替 root_dir，无旧格式的 vim.fs.find bug
+        -- 由于 lsp/ 不在 lua/ 下，require 不可达，通过文件路径 + dofile 加载
+        local lazy_root = vim.fn.stdpath("data") .. "/lazy/nvim-lspconfig"
+        local new_path = lazy_root .. "/lsp/" .. server .. ".lua"
+        if vim.uv.fs_stat(new_path) then
+          local ok, cfg = pcall(dofile, new_path)
+          if ok and type(cfg) == "table" and cfg.cmd then
+            return cfg
+          end
+        end
+        -- 回退旧格式 lspconfig/configs/<server>.lua（有 root_dir bug，尽量不用）
+        local ok, cfg = pcall(require, "lspconfig.configs." .. server)
+        if ok and type(cfg) == "table" then
+          return cfg.default_config or cfg
+        end
+      end
+
+      -- ================================================================
       -- 7. 应用 ["*"] 全局默认配置
       -- ================================================================
       if opts.servers["*"] then
@@ -293,119 +318,175 @@ return {
       end
 
       -- ================================================================
-      -- 8. 逐个 server 初始化
+      -- 8. LSP server 配置与启动
       -- ================================================================
 
       -- 尝试加载 mason-lspconfig（pcall 防止插件不存在时报错）
-      -- have_mason: 是否成功加载（true = 装了该插件）
-      -- mason_lsp: mason-lspconfig 模块引用，后续用它调用 .setup()
       local have_mason, mason_lsp = pcall(require, "mason-lspconfig")
 
-      -- mason_all: mason 能安装的 LSP server 名称列表
-      -- 格式: {"bashls", "cssls", "gopls", "lua_ls", "pyright", "rust_analyzer", "tsserver", ...}
-      -- 数据来源: mason-lspconfig 内置的 lspconfig_to_package 映射表
-      -- 用途: 判断某个 server 是否在 mason 管理范围内
+      -- ----------------------------------------------------------------
+      -- 8a. 构建 mason 支持的所有 server 列表（从 filetype 映射收集去重）
+      --     用于判断某 server 是否 mason 能安装
+      --     直接用静态 filetype_mappings，避免 get_mappings() 触发
+      --     get_mason_map() → cached_specs()，若 registry 未 refresh
+      --     则缓存空结果，导致后续 ensure_installed 映射失败
+      -- ----------------------------------------------------------------
       local mason_all = {}
       if have_mason then
-        local ok, map = pcall(function()
-          -- get_mason_map() 返回整个映射表（含 lspconfig_to_package、package_to_lspconfig 等）
-          -- lspconfig_to_package: { lua_ls = "lua-language-server", pyright = "pyright", ... }
-          -- vim.tbl_keys() 取其 key → server 名列表
-          return mason_lsp.mappings.get_mason_map().lspconfig_to_package
-        end)
-        if ok then
-          mason_all = vim.tbl_keys(map)
+        local ok, ft_mappings = pcall(require, "mason-lspconfig.filetype_mappings")
+        if ok and type(ft_mappings) == "table" then
+          local all = {}
+          for _, servers in pairs(ft_mappings) do
+            for _, server in ipairs(servers) do
+              all[server] = true
+            end
+          end
+          mason_all = vim.tbl_keys(all)
         end
       end
 
-      -- mason_exclude: 告诉 mason 不要自动启用这些 server
-      -- 内容来源:
-      --   1. enabled = false 的 server（用户显式禁用）
-      --   2. 被 opts.setup 自定义函数接管的 server（返回 true 表示"我自己管"）
-      -- 最终传给 mason-lspconfig 的 automatic_enable.exclude
-      local mason_exclude = {}
+      -- ----------------------------------------------------------------
+      -- 8b. 为 mason 支持的所有 server 预注册默认配置
+      --     这样后续 mason-lspconfig 的 automatic_enable 或手动 :Mason
+      --     安装的 server，都能通过 vim.lsp.enable() 自动启动
+      --     核心: 不限于 opts.servers 中明确声明的 server
+      -- ----------------------------------------------------------------
+      local mason_exclude = {} -- 告诉 mason 不要自动启用这些 server
+
+      local function register_defaults(server)
+        local defaults = get_lspconfig_default(server)
+        if not defaults then
+          return
+        end
+        -- 合并全局能力 + cmp capabilities
+        defaults.capabilities = vim.tbl_deep_extend(
+          "force",
+          make_capabilities(),
+          defaults.capabilities or {}
+        )
+        -- 注册到 Neovim（用户覆盖在下一步 8c 中处理）
+        vim.lsp.config(server, defaults)
+      end
+
+      -- 预注册所有 mason 已知的 server 默认配置
+      -- 跳过加载失败的（如 pico8_ls 等不在 nvim-lspconfig 中的）不会影响其他 server
+      for _, server in ipairs(mason_all) do
+        pcall(register_defaults, server)
+      end
 
       -- ----------------------------------------------------------------
-      -- configure(server) — 处理单个 LSP server 的配置和启动逻辑
-      --   @param server string  server 名称（来自 opts.servers 的 key）
-      --   @return boolean?      true = 归 mason 管理（保留到 install 列表）
-      --                            nil = 不归 mason 管（已禁用 / setup 拦截 / mason 不支持）
-      --
-      -- sopts 的三种简写语义（对应 opts.servers[server] 的三种写法）:
-      --   server = true   → sopts = {}                    (启用，全部用默认配置)
-      --   server = false  → sopts = { enabled = false }   (禁用，不启动)
-      --   server = nil    → sopts = { enabled = false }   (未定义也视为禁用)
-      --   server = {...}  → sopts 保持不变                (启用，使用自定义配置)
-      --
-      -- sopts.mason ~= false (~= 是 Lua 的不等于操作符):
-      --   除非显式写 mason = false（用系统安装版本），默认允许 mason 管理
-      --
-      -- #mason_exclude 是 Lua 长度操作符，等价于 table.insert:
-      --   mason_exclude[#mason_exclude + 1] = server  追加到数组末尾
+      -- ----------------------------------------------------------------
+      -- 8c. FileType 时才检查并启用该文件类型对应的 LSP server
+      --     不入驻 _enabled_configs 则内置回调不会尝试启动，真正做到按需
+      -- ----------------------------------------------------------------
+      do
+        local ok_ft, ft_mappings = pcall(require, "mason-lspconfig.filetype_mappings")
+        if ok_ft and type(ft_mappings) == "table" then
+          vim.api.nvim_create_autocmd("FileType", {
+            callback = function(args)
+              local ft = vim.bo[args.buf].filetype
+              local servers = ft_mappings[ft]
+              if not servers then
+                return
+              end
+              for _, server in ipairs(servers) do
+                if
+                  opts.servers[server] == nil
+                  and not vim.lsp.is_enabled(server)
+                  and not vim.tbl_contains(mason_exclude, server)
+                then
+                  local cfg = vim.lsp.config._configs[server]
+                  if cfg and cfg.cmd and vim.fn.executable(cfg.cmd[1]) == 1 then
+                    vim.lsp._enabled_configs[server] = {}
+                  end
+                end
+              end
+            end,
+          })
+        end
+      end
+
+      -- ----------------------------------------------------------------
+      -- 8d. 对 opts.servers 中声明的 server 进行配置
+      --     server = true   → 标记为 ensure_installed，让 mason 自动安装
+      --     server = false  → 加入 mason_exclude，禁止自动启用
+      --     server = {...}  → 合并用户配置覆盖默认值，重新注册
       -- ----------------------------------------------------------------
       local function configure(server)
-        -- "*" 不是真实 server，跳过（它是全局默认配置，已在上一步 vim.lsp.config("*") 处理）
         if server == "*" then
-          return false
+          return false -- 不是真实 server，跳过
         end
 
         local sopts = opts.servers[server]
-        sopts = sopts == true and {}           -- true → 空 table，全部用默认
-          or (not sopts) and { enabled = false } -- false/nil → 标记为禁用
-          or sopts                                -- table → 保持不变
-
-        -- 如果 server 标记为禁用（enabled = false）:
-        --   1. 加入 mason 排除列表，阻止 mason 自动启用
-        --   2. return 提前退出，不调 vim.lsp.config / vim.lsp.enable
-        if sopts.enabled == false then
-          mason_exclude[#mason_exclude + 1] = server
+        -- 用户没在 servers 中声明的 → 跳过（已由 8b 预注册默认配置）
+        -- 用户在 :Mason 手动安装的 server 仍会被 automatic_enable 启动
+        if sopts == nil then
           return
         end
 
-        -- use_mason: 这个 server 是否交给 mason 管理
-        -- 两个条件同时满足:
-        --   ① sopts.mason ~= false  → 用户没显式禁用 mason
-        --   ② vim.tbl_contains(mason_all, server) → mason 能安装这个 server
-        local use_mason = sopts.mason ~= false and vim.tbl_contains(mason_all, server)
+        -- 简写处理: true → 空 table（全部默认）| false → 禁用
+        sopts = sopts == true and {}
+          or (not sopts) and { enabled = false }
+          or sopts
 
-        -- 合并 cmp-like capabilities 到 server 配置
-        -- deepcopy 防止污染 opts 原值，后续对同一 server 多次调用不受影响
+        -- 用户显式禁用 → 加入排除列表
+        if sopts.enabled == false then
+          mason_exclude[#mason_exclude + 1] = server
+          -- 清除已注册的默认配置（__newindex 验证 cfg 为 table，不能直接传 nil）
+          vim.lsp.config._configs[server] = nil
+          return
+        end
+
+        -- 加载默认配置，用用户 opts 覆盖（"keep": 保留用户已设置的值）
+        local defaults = get_lspconfig_default(server)
+        if defaults then
+          sopts = vim.tbl_deep_extend("keep", sopts, defaults)
+        end
+
+        -- 合并 capabilities 并重新注册（覆盖 8b 中的纯默认配置）
         sopts = vim.deepcopy(sopts)
         sopts.capabilities = vim.tbl_deep_extend("force", make_capabilities(), sopts.capabilities or {})
 
-        -- 检查是否有自定义 setup 函数
-        -- 优先找 server 专属 setup（如 opts.setup.tsserver）
-        -- 找不到退回到 ["*"] 兜底（如 opts.setup["*"]）
+        -- 自定义 setup 钩子（如 typescript.nvim 接管 tsserver）
         local setup = opts.setup[server] or opts.setup["*"]
         if setup and setup(server, sopts) then
-          -- setup 返回 true = 用户自己接管了，加入排除列表，跳过默认流程
           mason_exclude[#mason_exclude + 1] = server
         else
-          -- 默认流程: 写入配置到 Neovim 内置 LSP 系统
-          vim.lsp.config(server, sopts)
-          if not use_mason then
-            -- 不归 mason 管的 server（如系统安装的），直接调用 Neovim 内置方式启动
-            -- 归 mason 管的则等 mason-lspconfig 统一调用 automatic_enable 启动
-            vim.lsp.enable(server)
-          end
+          vim.lsp.config(server, sopts)  -- 重新注册含用户覆盖的配置
+          vim.lsp.enable(server)          -- 启动 server（idempotent）
         end
-        return use_mason -- 返回 true 才能被 vim.tbl_filter 保留到 install 列表
+
+        -- 返回 true → server 加入 ensure_installed 列表，mason 确保安装
+        return sopts.mason ~= false and vim.tbl_contains(mason_all, server)
       end
 
-      -- vim.tbl_filter: 对 opts.servers 的每个 key 调用 configure(server)
-      -- 只保留 configure 返回 true 的项 → 即 mason 能安装的 server
-      -- 例如默认配置下:
-      --   "*"     → configure 第一行就 return false，过滤掉
-      --   "lua_ls" → mason 支持，configure 返回 true，保留
-      -- 结果 install = {"lua_ls"}
+      -- 只对 opts.servers 中显式声明的 server 调用 configure
+      -- 未声明的 server 保留 8b 中注册的纯默认配置
       local install = vim.tbl_filter(configure, vim.tbl_keys(opts.servers))
 
-      -- 交给 mason-lspconfig 统一处理安装和自动启用
-      -- ensure_installed: mason 确保这些 LSP server 已安装（自动下载）
-      -- automatic_enable.exclude: 装归装，但这些 server 不要自动启动
-      --   （包括 enabled=false 的、被 opts.setup 自定义函数接管的）
-      -- 注意: 只有当安装了 mason-lspconfig 且 install 列表非空时才调用
+      -- 过滤已安装的 server：ensure_installed 依赖 lspconfig→mason 映射，
+      -- 该映射可能尚未加载，导致 "not a valid entry" 告警。已安装的跳过即可。
       if have_mason and #install > 0 then
+        local installed = {}
+        for _, pkg in ipairs(require("mason-registry").get_installed_package_names()) do
+          installed[pkg] = true
+        end
+        install = vim.tbl_filter(function(server)
+          -- 直接包名匹配（pyright→pyright），少数不匹配的（lua_ls→lua-language-server）
+          -- 回退到 _configs 里的 cmd 二进制名匹配
+          local cfg = vim.lsp.config._configs[server]
+          local bin = cfg and cfg.cmd and cfg.cmd[1]
+          return not installed[server] and not (bin and installed[bin])
+        end, install)
+      end
+
+      -- ----------------------------------------------------------------
+      -- 8e. 设置 mason-lspconfig
+      --     ensure_installed: 启动时确保这些 server 已通过 mason 安装
+      --     automatic_enable.exclude: 禁止自动启用这些 server
+      --     automatic_enable 在未来 :Mason 安装时自动 enable 新 server
+      -- ----------------------------------------------------------------
+      if have_mason then
         mason_lsp.setup({
           ensure_installed = install,
           automatic_enable = { exclude = mason_exclude },

@@ -289,6 +289,8 @@ Noice is temporarily disabled when LeaderF is active -- gtags keymaps call `noic
 ### LSP
 
 > nvim-lspconfig provides quickstart configurations for the built-in LSP client. mason.nvim and mason-lspconfig.nvim manage automatic installation and enablement of language servers. Diagnostics, inlay hints, code folding, and code lenses are configured with sensible defaults.
+>
+> **Auto-enable (lazy):** On startup, no LSP servers are pre-loaded. When a buffer's filetype is first encountered, only the servers matching that filetype are checked — and only those with an installed binary are enabled. `:Mason install <server>` then open a matching file, the LSP starts automatically.
 
 | Key | Mode | Action |
 |---|---|---|
@@ -304,12 +306,17 @@ Noice is temporarily disabled when LeaderF is active -- gtags keymaps call `noic
 | `<leader>er` | n | Rename symbol |
 | `<leader>el` | n | LSP info |
 | `<leader>ec` | n/v | Run code lens |
-| `<leader>cm` | n | Open Mason package manager |
+| `<leader>eC` | n | Refresh code lens |
+| `<leader>eo` | n | Organize imports |
+| `<leader>eA` | n | Source action (source.* only) |
+| `<leader>em` | n | Open Mason package manager |
 
-**Adding new LSP servers:** Add a key to `servers` in `lua/plugins/nvim-lspconfig.lua`. For example:
+**Adding custom LSP server config:** Only add to `servers` in `lua/plugins/nvim-lspconfig.lua` if you need settings beyond the default. For basic usage, just `:Mason install <server>` and open a matching file.
 ```lua
 servers = {
-  pyright = true,          -- enable with defaults (mason will install it)
+  lua_ls = {               -- custom settings for lua
+    settings = { ... },
+  },
   gopls = { mason = false }, -- use system-installed gopls
 }
 ```
@@ -538,7 +545,7 @@ These plugins are loaded on `VeryLazy` event or automatically, with no custom ke
 | **vim-markdown-toc** | Generate and update markdown table of contents (TOC). Supports GitHub-flavored markdown (GFM) and standard markdown formats. | `:GenTocGFM` -- generate GFM TOC / `:GenTocMarkdown` -- standard TOC / `:UpdateToc` -- refresh existing TOC |
 | **dressing.nvim** | Neovim plugin to improve the default `vim.ui.select` and `vim.ui.input` interfaces. Replaces the boring default prompts with styled floating windows using telescope/fzf-style UI. | Works automatically when any plugin calls `vim.ui.select` or `vim.ui.input` |
 | **nvim-bqf** | Better quickfix list. Enhances the built-in quickfix window with fzf integration, preview window, and syntax highlighting, making `:copen` much more useful. | Works automatically in quickfix windows |
-| **mason.nvim** | Portable package manager for LSP servers, linters, formatters and tools. Auto-installs `stylua` and `shfmt` on startup. | `<leader>cm` or `:Mason` to open the UI; install new tools via the Mason interface |
+| **mason.nvim** | Portable package manager for LSP servers, linters, formatters and tools. Auto-installs `stylua` and `shfmt` on startup. | `<leader>em` or `:Mason` to open the UI; install new tools via the Mason interface |
 | **mason-lspconfig.nvim** | Bridge between mason and lspconfig. Ensures LSP servers installed via mason are automatically enabled. | Works automatically; see LSP section above |
 | **nvim-lspconfig** | Neovim LSP configuration helper. Provides quickstart configurations for built-in LSP client. Keymaps and server defaults configured in `nvim-lspconfig.lua`. | Works automatically; see LSP keybindings section above |
 
@@ -559,20 +566,25 @@ LSP is configured through three plugin files:
 | File | Responsibility |
 |---|---|
 | `lua/plugins/nvim-lspconfig.lua` | LSP client config: diagnostics, keymaps, server defaults, inlay hints, folding, codelens, per-server settings |
-| `lua/plugins/mason.lua` | LSP server / formatter / linter package manager (`:Mason` or `<leader>cm`) |
+| `lua/plugins/mason.lua` | LSP server / formatter / linter package manager (`:Mason` or `<leader>em`) |
 | `lua/plugins/nvim-cmp.lua` | Completion UI (depends on LSP for `nvim_lsp` source) |
 
 **How it works:**
-1. `mason.nvim` + `mason-lspconfig.nvim` auto-install and enable LSP servers
-2. `nvim-lspconfig.lua` defines global `["*"]` defaults (capabilities, keymaps) and per-server overrides (e.g. `lua_ls` settings)
-3. When a matching file is opened, the LSP server starts and attaches to the buffer
-4. `LspAttach` autocmds register buffer-local keymaps and enable inlay hints / folding / codelens
-5. Diagnostics use icons from `config.init.icons` with virtual text and sign column markers
+1. 8a: Build list of all mason-supported servers from static `filetype_mappings`
+2. 8b: Pre-register default configs for all mason servers (reads `lsp/<server>.lua` via `dofile`)
+3. 8c: Register a FileType autocmd — when a buffer's filetype is set, look up matching servers in `filetype_mappings`, check `executable()` for each, and mark installed ones in `vim.lsp._enabled_configs`. Nothing happens until a file is opened
+4. 8d: Process `opts.servers` — user-declared servers (e.g. `lua_ls`) get custom settings merged and are enabled via `vim.lsp.enable()`
+5. 8e: Set up `mason-lspconfig` for `ensure_installed` and `automatic_enable` on future `:Mason` installs
+6. Built-in `vim.lsp.enable` FileType autocmd (created in 8d) fires after 8c, iterates `_enabled_configs` and starts matching servers for the current buffer
+7. `LspAttach` autocmds register buffer-local keymaps and enable inlay hints / folding / codelens
+8. Diagnostics use icons from `config.init.icons` with virtual text and sign column markers
 
 **Adding a new server:**
 ```lua
--- in nvim-lspconfig.lua opts.servers:
-pyright = true,              -- mason installs & enables it
+-- Just install via :Mason, then open a matching file. No config needed.
+:Mason install rust_analyzer
+
+-- Or with custom settings in nvim-lspconfig.lua opts.servers:
 rust_analyzer = { mason = false }, -- use system-installed binary
 ```
 

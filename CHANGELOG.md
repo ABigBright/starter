@@ -27,6 +27,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix GTAGSCONF path from global 6.6.9 to 6.6.14
 - Fix which-key crash on leader key press: patch `Keys.managed` nil error caused by lazy.nvim 9.14+ removing the `managed` field from its keys handler API
 - Fix orgmode treesitter `inline_code_block` query error: use orgmode's own grammar installer (`:Org install_treesitter_grammar`) instead of deprecated `setup_ts_grammar()`, re-enable 'org' in treesitter ensure_installed
+- Fix LSP auto-enable: any server installed via `:Mason` now auto-starts on matching filetypes without explicit `opts.servers` declaration. Uses lazy FileType autocmd with `executable()` check — only the servers matching the current buffer's filetype are evaluated, and only if their binary is actually installed. No upfront 259-server iteration, no `doautoall` cascade
+- Fix `vim.lsp.config()` API misuse: getter uses bracket `vim.lsp.config[name]` (`__index`) instead of call `vim.lsp.config(name)` (`__call` expects 2 args). Clear config with raw `_configs[server] = nil` since `__newindex` also validates cfg is table
+- Fix "not a valid entry in ensure_installed" warning: build `mason_all` from static `filetype_mappings` instead of `mason_lsp.get_mappings()` which prematurely cached empty registry data. Filter already-installed servers from `ensure_installed` list
+- Fix startup hang: `vim.lsp.enable()` internally calls `doautoall` on all buffers; calling it in a 259-server loop caused ~33k config resolutions. Replaced with direct `vim.lsp._enabled_configs[server] = {}` assignment in lazy FileType handler
+- Change Mason keybinding from `<leader>cm` to `<leader>em` for consistency with other LSP keys in `<leader>e` group
+- Remove `bashls = true` from `opts.servers` (no longer needed — auto-enabled by 8c)
 - Fix LeaderF gtags error window focus loss: convert gtags keymaps from printf command strings to Lua functions that disable noice before calling LeaderF, preventing noice cmdline_popup from stealing focus
 - Fix neo-tree migration warnings: replace `vim.loop` with `vim.uv` (deprecated in Neovim 0.10+), convert `follow_current_file` from boolean to table format (`{ enabled = true }`), use canonical `command.execute({ action = "close" })` instead of `close_all()`, remove obsolete `neo_tree_remove_legacy_commands`
 - Fix `vim.lsp.get_active_clients()` deprecation warning: replace with `vim.lsp.get_clients()` in util/init.lua
