@@ -160,6 +160,8 @@ return {
             { "n", "gy",         vim.lsp.buf.type_definition,    "Goto Type Definition" },
             { "n", "gD",         vim.lsp.buf.declaration,        "Goto Declaration" },
             { "n", "gK",         vim.lsp.buf.signature_help,     "Signature Help" },
+            { "n", "[[",         vim.diagnostic.goto_prev,       "Previous Diagnostic" },
+            { "n", "]]",         vim.diagnostic.goto_next,       "Next Diagnostic" },
             { "n", "<leader>ea", vim.lsp.buf.code_action,        "Code Action",             mode = { "n", "v" } },
             { "n", "<leader>el", "<cmd>LspInfo<cr>",             "LSP Info" },
           }
@@ -346,6 +348,12 @@ return {
       -- 8c. FileType 时才按需加载配置并启用 LSP server
       --     不预加载所有 server 默认配置，只在第一次遇到某 filetype 时
       --     才 dofile 对应 1~3 个 server 的 lsp/*.lua
+      -- formatter-only tools that appear in mason-lspconfig mappings
+      -- but are not actual LSP servers — never attempt to enable
+      local lsp_blacklist = {
+        stylua = true,
+      }
+
       -- ----------------------------------------------------------------
       do
         local ok_ft, ft_mappings = pcall(require, "mason-lspconfig.filetype_mappings")
@@ -362,6 +370,7 @@ return {
                   opts.servers[server] == nil
                   and not vim.lsp.is_enabled(server)
                   and not vim.tbl_contains(mason_exclude, server)
+                  and not lsp_blacklist[server]
                 then
                   local cfg = vim.lsp.config._configs[server]
                   if not cfg then
