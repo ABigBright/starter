@@ -301,11 +301,6 @@ return {
             return cfg
           end
         end
-        -- 回退旧格式 lspconfig/configs/<server>.lua（有 root_dir bug，尽量不用）
-        local ok, cfg = pcall(require, "lspconfig.configs." .. server)
-        if ok and type(cfg) == "table" then
-          return cfg.default_config or cfg
-        end
       end
 
       -- ================================================================
@@ -345,39 +340,12 @@ return {
         end
       end
 
-      -- ----------------------------------------------------------------
-      -- 8b. 为 mason 支持的所有 server 预注册默认配置
-      --     这样后续 mason-lspconfig 的 automatic_enable 或手动 :Mason
-      --     安装的 server，都能通过 vim.lsp.enable() 自动启动
-      --     核心: 不限于 opts.servers 中明确声明的 server
-      -- ----------------------------------------------------------------
       local mason_exclude = {} -- 告诉 mason 不要自动启用这些 server
 
-      local function register_defaults(server)
-        local defaults = get_lspconfig_default(server)
-        if not defaults then
-          return
-        end
-        -- 合并全局能力 + cmp capabilities
-        defaults.capabilities = vim.tbl_deep_extend(
-          "force",
-          make_capabilities(),
-          defaults.capabilities or {}
-        )
-        -- 注册到 Neovim（用户覆盖在下一步 8c 中处理）
-        vim.lsp.config(server, defaults)
-      end
-
-      -- 预注册所有 mason 已知的 server 默认配置
-      -- 跳过加载失败的（如 pico8_ls 等不在 nvim-lspconfig 中的）不会影响其他 server
-      for _, server in ipairs(mason_all) do
-        pcall(register_defaults, server)
-      end
-
       -- ----------------------------------------------------------------
-      -- ----------------------------------------------------------------
-      -- 8c. FileType 时才检查并启用该文件类型对应的 LSP server
-      --     不入驻 _enabled_configs 则内置回调不会尝试启动，真正做到按需
+      -- 8c. FileType 时才按需加载配置并启用 LSP server
+      --     不预加载所有 server 默认配置，只在第一次遇到某 filetype 时
+      --     才 dofile 对应 1~3 个 server 的 lsp/*.lua
       -- ----------------------------------------------------------------
       do
         local ok_ft, ft_mappings = pcall(require, "mason-lspconfig.filetype_mappings")
@@ -396,6 +364,15 @@ return {
                   and not vim.tbl_contains(mason_exclude, server)
                 then
                   local cfg = vim.lsp.config._configs[server]
+                  if not cfg then
+                    local defaults = get_lspconfig_default(server)
+                    if defaults then
+                      defaults.capabilities = vim.tbl_deep_extend(
+                        "force", make_capabilities(), defaults.capabilities or {})
+                      vim.lsp.config(server, defaults)
+                      cfg = defaults
+                    end
+                  end
                   if cfg and cfg.cmd and vim.fn.executable(cfg.cmd[1]) == 1 then
                     vim.lsp._enabled_configs[server] = {}
                   end
