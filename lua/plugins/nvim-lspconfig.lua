@@ -100,6 +100,10 @@ return {
               },
             },
           },
+          clangd = {
+            root_markers = { '.root', '.git' },
+            cmd = { 'clangd', '--background-index' },
+          },
         },
 
         -- ================================================================
