@@ -52,7 +52,7 @@ return {
         -- folds — LSP 驱动的代码折叠
         -- ================================================================
         folds = {
-          enabled = true,
+          enabled = false,
         },
 
         -- ================================================================
@@ -386,7 +386,7 @@ return {
                       cfg = defaults
                     end
                   end
-                  if cfg and cfg.cmd and vim.fn.executable(cfg.cmd[1]) == 1 then
+                  if cfg and cfg.cmd and type(cfg.cmd) == "table" and vim.fn.executable(cfg.cmd[1]) == 1 then
                     vim.lsp._enabled_configs[server] = {}
                   end
                 end
