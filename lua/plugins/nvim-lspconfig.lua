@@ -54,15 +54,14 @@ return {
           local client = vim.lsp.get_client_by_id(args.data.client_id)
           if not client then return end
 
-          local m = { noremap = true, silent = true, buffer = buf }
-          vim.keymap.set("n", "K", vim.lsp.buf.hover, m)
-          vim.keymap.set("n", "gd", vim.lsp.buf.definition, m)
-          vim.keymap.set("n", "gr", vim.lsp.buf.references, m)
-          vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, m)
-          vim.keymap.set({"n", "v"}, "<leader>ca", vim.lsp.buf.code_action, m)
-          vim.keymap.set("n", "<leader>l", "<cmd>LspInfo<cr>", m)
-          if client.supports_method("textDocument/signatureHelp") then
-            vim.keymap.set("i", "<c-k>", vim.lsp.buf.signature_help, m)
+          vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover", buffer = buf })
+          vim.keymap.set("n", "<leader>jD", vim.lsp.buf.definition, { desc = "Definition", buffer = buf })
+          vim.keymap.set("n", "<leader>jR", vim.lsp.buf.references, { desc = "References", buffer = buf })
+          vim.keymap.set("n", "<leader>er", vim.lsp.buf.rename, { desc = "Rename", buffer = buf })
+          vim.keymap.set({"n", "v"}, "<leader>ea", vim.lsp.buf.code_action, { desc = "Code Action", buffer = buf })
+          vim.keymap.set("n", "<leader>el", "<cmd>LspInfo<cr>", { desc = "LspInfo", buffer = buf })
+          if client:supports_method("textDocument/signatureHelp") then
+            vim.keymap.set("i", "<c-k>", vim.lsp.buf.signature_help, { desc = "Signature Help", buffer = buf })
           end
         end,
       })
