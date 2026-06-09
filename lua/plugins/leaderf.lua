@@ -1,7 +1,8 @@
 return {
     {
-        'Yggdroot/LeaderF',
+        'ABigBright/LeaderF',
         lazy = true, -- make sure we load this during startup if it is your main colorscheme
+        branch = "cus_for_briq",
         init = function()
             vim.g.Lf_ShortcutF = '<leader>ff'
             vim.g.Lf_ShortcutB = '<leader>bt'

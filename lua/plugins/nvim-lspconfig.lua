@@ -158,11 +158,11 @@ return {
           -- gr 加 nowait，避免和 which-key 的等待延迟冲突
           local maps = {
             { "n", "K",          vim.lsp.buf.hover,              "Hover" },
-            { "n", "gd",         vim.lsp.buf.definition,         "Goto Definition" },
-            { "n", "gr",         vim.lsp.buf.references,         "References",              nowait = true },
-            { "n", "gI",         vim.lsp.buf.implementation,     "Goto Implementation" },
-            { "n", "gy",         vim.lsp.buf.type_definition,    "Goto Type Definition" },
-            { "n", "gD",         vim.lsp.buf.declaration,        "Goto Declaration" },
+            { "n", "<leader>jD",         vim.lsp.buf.definition,         "Goto Definition" },
+            { "n", "<leader>jR",         vim.lsp.buf.references,         "References",              nowait = true },
+            -- { "n", "gI",         vim.lsp.buf.implementation,     "Goto Implementation" },
+            -- { "n", "gy",         vim.lsp.buf.type_definition,    "Goto Type Definition" },
+            -- { "n", "gD",         vim.lsp.buf.declaration,        "Goto Declaration" },
             { "n", "gK",         vim.lsp.buf.signature_help,     "Signature Help" },
             { "n", "[[",         vim.diagnostic.goto_prev,       "Previous Diagnostic" },
             { "n", "]]",         vim.diagnostic.goto_next,       "Next Diagnostic" },
